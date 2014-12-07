@@ -77,68 +77,87 @@
                     </span>
                 </div>
                 <div class="widget-body">
-                    <?php if(!empty($message)) echo $message; ?>
-                    <form action="register.php" class="form-horizontal no-margin" method="post">
-                        <div class="control-group">
-                            <label for="username" class="control-label">Username</label>
-                            <div class="controls">
-                                <input type="text" name="username" maxlength="20" value="<?php if(isset($clean['username'])) echo $clean['username']; ?>" tabindex='1' />
-                                <span class="help-inline">
-                                    <?php
-                                        if(isset($errors) && in_array('username', $errors)) {
-                                            echo '<span class="warning">Vui lòng nhập username</span>';
-                                        }
-                                    ?>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="email" class="control-label">Email</label>
-                            <div class="controls">
-                                <input type="text" name="email" maxlength="100" value="<?php if(isset($clean['email'])) echo $clean['email']; ?>" tabindex='2' />
-                                <span class="help-inline">
-                                    <?php
-                                        if(isset($errors) && in_array('email', $errors)) {
-                                            echo '<span class="warning">Vui lòng nhập email</span>';
-                                        }
-                                    ?>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="password" class="control-label">Mật khẩu</label>
-                            <div class="controls">
-                                <input type="password" name="password" maxlength="20" value="<?php if(isset($trimmed['password'])) echo $trimmed['password']; ?>" tabindex='3' />
-                                <span class="help-inline">
-                                    <?php
-                                        if(isset($errors) && in_array('password', $errors)) {
-                                            echo '<span class="warning">Vui lòng nhập mật khẩu</span>';
-                                        }
-                                    ?>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="repassword" class="control-label">Nhập lại mật khẩu</label>
-                            <div class="controls">
-                                <input type="password" name="repassword" maxlength="20" value="<?php if(isset($trimmed['repassword'])) echo $trimmed['repassword']; ?>" tabindex='4' />
-                                    <span class="help-inline">
-                                        <?php
-                                            if(isset($errors) && in_array('repassword', $errors)) {
-                                                echo '<span class="warning">Please enter your password again.</span>';
-                                            }
-                                            if(isset($errors) && in_array('notmatch', $errors)) {
-                                                echo '<span class="warning">Your confirmed password does not match.</span>';
-                                            }
-                                        ?>
-                                    </span>
+                    <div class="span3">&nbsp;</div>
+                    <div class="span6">
+                        <div class="sign-in-container">
+                            <?php if(!empty($message)) echo $message; ?>
+                            <form action="register.php" class="login-wrapper" method="post">
+                                <div class="header">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <h3>Đăng ký<img src="<?=ADMIN_CSS_URL?>/img/logo1.png" alt="Logo" class="pull-right"></h3>
+                                            <p>Nhập đầy đủ và thông tin một cách chính xác để đăng ký.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        <div class="form-actions no-margin">
-                            <input class="btn btn-info pull-right" type="submit" name="submit" value="Đăng ký" tabindex="5" />
-                            <div class="clearfix"></div>
+                                <div class="content">
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label for="username" class="">Username</label>
+                                            <input type="text" name="username" maxlength="20" value="<?php if(isset($clean['username'])) echo $clean['username']; ?>" tabindex='1' />
+                                            <span class="help-inline">
+                                                <?php
+                                                    if(isset($errors) && in_array('username', $errors)) {
+                                                        echo '<span class="warning">Vui lòng nhập username</span>';
+                                                    }
+                                                ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label for="email" class="control-label">Email</label>
+                                            <input type="text" name="email" maxlength="100" value="<?php if(isset($clean['email'])) echo $clean['email']; ?>" tabindex='2' />
+                                            <span class="help-inline">
+                                                <?php
+                                                    if(isset($errors) && in_array('email', $errors)) {
+                                                        echo '<span class="warning">Vui lòng nhập email</span>';
+                                                    }
+                                                ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <label for="password" class="control-label">Mật khẩu</label>
+                                            <input type="password" name="password" maxlength="20" value="<?php if(isset($trimmed['password'])) echo $trimmed['password']; ?>" tabindex='3' />
+                                            <span class="help-inline">
+                                                <?php
+                                                    if(isset($errors) && in_array('password', $errors)) {
+                                                        echo '<span class="warning">Vui lòng nhập mật khẩu</span>';
+                                                    }
+                                                ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span12">
+                                            <div class="control-group">
+                                                <label for="repassword" class="control-label">Nhập lại mật khẩu</label>
+                                                <input type="password" name="repassword" maxlength="20" value="<?php if(isset($trimmed['repassword'])) echo $trimmed['repassword']; ?>" tabindex='4' />
+                                                <span class="help-inline">
+                                                    <?php
+                                                        if(isset($errors) && in_array('repassword', $errors)) {
+                                                            echo '<span class="warning">Please enter your password again.</span>';
+                                                        }
+                                                        if(isset($errors) && in_array('notmatch', $errors)) {
+                                                            echo '<span class="warning">Your confirmed password does not match.</span>';
+                                                        }
+                                                    ?>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <input class="btn btn-info pull-right" type="submit" name="submit" value="Đăng ký" tabindex="5" />
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
+                    <div class="span3">&nbsp;</div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>

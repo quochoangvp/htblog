@@ -2,7 +2,7 @@
 
 define('ROOT_DIR', dirname(dirname(__FILE__)));
 
-define('BASE_URL', 'http://localhost/htblog_v1');
+define('BASE_URL', 'http://localhost/htblog');
 define('ADMIN_URL', BASE_URL. '/admin');
 define('CSS_URL', BASE_URL. '/public/css/default');
 define('ADMIN_CSS_URL', BASE_URL. '/public/css/admin');
@@ -245,7 +245,7 @@ function view_cat_list($by, $ad) {
         FROM categories AS c
         INNER JOIN users AS u
         USING(user_id)
-        ORDER BY {$by} {$ad}";
+        ORDER BY cat_id ASC";
     $r = mysqli_query($con, $q);
     confirm_query($r,$q);
     if (mysqli_num_rows($r) > 0) {
@@ -260,103 +260,22 @@ function view_cat_list($by, $ad) {
                         <div class="widget-body">
                             <div id="dt_example" class="example_alt_pagination">
                                 <div id="data-table_wrapper" class="dataTables_wrapper" role="grid">
-                                    <div id="data-table_length" class="dataTables_length">
-                                        <label>Show <select size="1" name="data-table_length" aria-controls="data-table">
-                                            <option value="10" selected="selected">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> entries</label>
-                                    </div>
-                                    <div class="dataTables_filter" id="data-table_filter">
-                                        <label>Search: <input type="text" aria-controls="data-table"></label>
-                                    </div>
                                     <table class="table table-condensed table-striped table-hover table-bordered pull-left dataTable" id="data-table" aria-describedby="data-table_info">
                                         <thead>
                                             <tr role="row" id="cats">
-                                                <th style="width: 40px;" class="sorting';
-                                                if ($by == 'cat_id') {
-                                                    if ($ad == 'DESC'){
-                                                        $output .= ' desc';
-                                                    } else {
-                                                        $output .= ' asc';
-                                                    }
-                                                }
-                                                $output .= '" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1"';
-                                                if ($ad == 'DESC') {
-                                                    $output .= ' aria-sort="descending"';
-                                                } else {
-                                                    $output .= ' aria-sort="ascending"';
-                                                }
-                                                $output .= ' id="cat_id">ID</th>
-                                                <th style="width: 200px;" class="sorting';
-                                                if ($by == 'cat_name') {
-                                                    if ($ad == 'DESC') {
-                                                        $output .= ' desc';
-                                                    } else {
-                                                        $output .= ' asc';
-                                                    }
-                                                }
-                                                $output .= '" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1"';
-                                                if ($ad == 'DESC') {
-                                                    $output .= ' aria-sort="descending"';
-                                                } else {
-                                                    $output .= ' aria-sort="ascending"';
-                                                }
-                                                $output .= ' id="cat_name">Tên thể loại</th>
-                                                <th style="width: 200px;" class="sorting';
-                                                if ($by == 'parent_id') {
-                                                    if ($ad == 'DESC') {
-                                                        $output .= ' desc';
-                                                    } else {
-                                                        $output .= ' asc';
-                                                    }
-                                                }
-                                                $output .= '" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1"';
-                                                if ($ad == 'DESC') {
-                                                    $output .= ' aria-sort="descending"';
-                                                } else {
-                                                    $output .= ' aria-sort="ascending"';
-                                                }
-                                                $output .= ' id="parent_id">Thể loại mẹ</th>
-                                                <th style="width: 100px;" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1">Số bài viết</th>
-                                                <th style="width: 147px;" class="sorting';
-                                                if ($by == 'user_id') {
-                                                    if ($ad == 'DESC') {
-                                                        $output .= ' desc';
-                                                    } else {
-                                                        $output .= ' asc';
-                                                    }
-                                                }
-                                                $output .= '" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1"';
-                                                if ($ad == 'DESC') {
-                                                    $output .= ' aria-sort="descending"';
-                                                } else {
-                                                    $output .= ' aria-sort="ascending"';
-                                                }
-                                                $output .= ' id="user_id">Người đăng</th>
-                                                <th style="width: 147px;" class="sorting';
-                                                if ($by == 'time') {
-                                                    if ($ad == 'DESC') {
-                                                        $output .= ' desc';
-                                                    } else {
-                                                        $output .= ' asc';
-                                                    }
-                                                }
-                                                $output .= '" role="columnheader" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1"';
-                                                if ($ad == 'DESC') {
-                                                    $output .= ' aria-sort="descending"';
-                                                } else {
-                                                    $output .= ' aria-sort="ascending"';
-                                                }
-                                                $output .= ' id="time">Ngày đăng</th>
+                                                <th style="width: 40px;">ID</th>
+                                                <th style="width: 200px;">Tên thể loại</th>
+                                                <th style="width: 200px;">Thể loại mẹ</th>
+                                                <th style="width: 100px;">Số bài viết</th>
+                                                <th style="width: 147px;">Người đăng</th>
+                                                <th style="width: 147px;">Ngày đăng</th>
                                                 <th style="width: 100px;">Tác động</th>
                                             </tr>
                                         </thead>
                                         <tbody role="alert" aria-live="polite" aria-relevant="all">
         ';
         while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
-            $output .= '<tr class="gradeA odd">';
+            $output .= '<tr class="gradeA">';
             $output .= '<td>'.$row['cat_id'].'</td>
                         <td><a href="'.BASE_URL.'/category.php?cid='.$row['cat_id'].'">'.$row['cat_name'].'</a></td>
                         <td>';
@@ -390,18 +309,6 @@ function view_cat_list($by, $ad) {
         $output .= '
                                         </tbody>
                                     </table>
-                                    <div class="dataTables_info" id="data-table_info">Hiển thị từ 1 đến 10 của 40 thể loại</div>
-                                    <div class="dataTables_paginate paging_full_numbers" id="data-table_paginate">
-                                        <a tabindex="0" class="first paginate_button paginate_button_disabled" id="data-table_first">Đầu</a>
-                                        <a tabindex="0" class="previous paginate_button paginate_button_disabled" id="data-table_previous">Trước</a>
-                                        <span><a tabindex="0" class="paginate_active">1</a>
-                                            <a tabindex="0" class="paginate_button">2</a>
-                                            <a tabindex="0" class="paginate_button">3</a>
-                                            <a tabindex="0" class="paginate_button">4</a>
-                                        </span>
-                                        <a tabindex="0" class="next paginate_button" id="data-table_next">Tiếp</a>
-                                        <a tabindex="0" class="last paginate_button" id="data-table_last">Cuối</a>
-                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -440,9 +347,31 @@ function sidebar_cat_list($category=0,$level=0) {
     return $output;
 }
 
+function nav_cat_list($category=0,$level=0,$class='nav_cat_list') {
+    global $con;
+    $q = "SELECT cat_id, parent_id, cat_name FROM categories WHERE parent_id = $category";
+    $r = mysqli_query($con, $q);
+    confirm_query($r,$q);
+    if (mysqli_num_rows($r) > 0) {
+        $level++;
+        $output = '<ul class="'.$class.'">';
+        while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
+            $output .= '<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="' . BASE_URL . '/category.php?cid=' . $row['cat_id'] . '"><span class="label-bullet-blue"></span>' . $row['cat_name'] . '</a>';
+            if (mysqli_num_rows($r) > 0) {
+                $output .= nav_cat_list($row['cat_id'],$level, 'dropdown-menu');
+            }
+            $output .= '</li>';
+        }
+        $output .= '</ul>';
+    } else {
+        $output = false;
+    }
+    return $output;
+}
+
 function sidebar_recent_posts() {
     global $con;
-    $q = "SELECT post_id, post_name FROM posts ORDER BY time LIMIT 0,20";
+    $q = "SELECT post_id, post_name FROM posts ORDER BY time DESC LIMIT 0,20";
     $r = mysqli_query($con, $q);
     confirm_query($r,$q);
     if(mysqli_num_rows($r) > 0) {
@@ -530,17 +459,38 @@ function getParent($cid) {
 function breadcrumb($cid) {
     $parents = getParent($cid);
     echo "<li itemscope itemtype=\"http://data-vocabulary.org/Breadcrumb\">
-            <a href=\"".BASE_URL."\" itemprop=\"url\">
-              <span itemprop=\"title\">Trang chủ</span>
-              </a>
-          </li>";
+                <span itemprop=\"title\">
+                    <a href=\"".BASE_URL."\" itemprop=\"url\">Trang chủ</a>
+                </span>
+            </li>";
     foreach ($parents as $id => $name) {
         echo "
             <li itemscope itemtype=\"http://data-vocabulary.org/Breadcrumb\">
-              › <a href=\"".BASE_URL."/category.php?cid=".$id."\" itemprop=\"url\">
-                <span itemprop=\"title\">".$name."</span>
-              </a>
+                <span itemprop=\"title\">
+                    <a href=\"".BASE_URL."/category.php?cid=".$id."\" itemprop=\"url\">".$name."</a>
+                </span>
             </li>
         ";
     }
+}
+
+function setPostView($post_id) {
+    global $con;
+    $ip       = $_SERVER["REMOTE_ADDR"];
+    $agent    = $_SERVER["HTTP_USER_AGENT"];
+    $datetime = date("Y-m-d") . ' ' . date('H:i:s');
+    if(!select_data("SELECT ip_address FROM visitors WHERE post_id = {$post_id}")) {
+        insert_data('visitors', '(value, post_id, ip_address, user_agent, datetime)', "(1, $post_id, '$ip', '$agent', '$datetime')");
+    } else {
+        update_data('visitors', "value = (value+1), user_agent = '$agent', datetime = '$datetime'", "post_id = $post_id");
+    }
+}
+function getPostView($post_id) {
+    $postview = select_data("SELECT COUNT(ip_address) AS pv FROM visitors WHERE post_id = {$post_id}");
+    return $postview[0]['pv'];
+}
+function getUserView($post_id) {
+    $ip       = $_SERVER["REMOTE_ADDR"];
+    $postview = select_data("SELECT value FROM visitors WHERE ip_address = '{$ip}' AND post_id = {$post_id}");
+    return $postview[0]['value'];
 }

@@ -24,7 +24,25 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="<?=JS_URL?>/jquery.min.js"></script>
     <script type="text/javascript" src="<?=JS_URL?>/tinymce/tinymce.min.js"></script>
-    <script type="text/javascript" src="<?=ADMIN_CSS_URL?>/js/sort_cats.js"></script>
+<?php if(current_file() == 'view_categories.php') { ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#data-table').dataTable({
+                "order": [[ 0, "asc" ]],
+                "sPaginationType": "full_numbers"
+            });
+        } );
+    </script>
+<?php } if(current_file() == 'view_posts.php') { ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#data-table').dataTable({
+                "order": [[ 2, "desc" ]],
+                "sPaginationType": "full_numbers"
+            });
+        } );
+    </script>
+<?php } ?>
     <script type="text/javascript">
     tinymce.init({
         selector: "textarea",
@@ -56,9 +74,9 @@ session_start();
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu pull-right">
-                <li><a href="<?=BASE_URL?>/users/profile.php">Edit Profile</a></li>
-                <li><a href="<?=BASE_URL?>/users/account_settings.php">Account Settings</a></li>
-                <li><a href="<?=BASE_URL?>/users/logout.php">Logout</a></li>
+                <li><a href="<?=BASE_URL?>/users/profile.php">Hồ sơ</a></li>
+                <li><a href="<?=BASE_URL?>/users/account_settings.php">Cài đặt tài khoản</a></li>
+                <li><a href="<?=BASE_URL?>/users/logout.php">Đăng xuất</a></li>
             </ul>
             <?php } else { ?>
             <a class="btn btn-primary" data-original-title="" href="<?=BASE_URL?>/users/login.php">Đăng nhập</a>

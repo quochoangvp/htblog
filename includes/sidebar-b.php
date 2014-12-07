@@ -1,5 +1,5 @@
 	<div class="right-sidebar">
-	    <div class="wrapper">
+	    <!-- <div class="wrapper">
 	    	<div id="scrollbar">
 	    		<div class="scrollbar" style="height: 340px;">
 	    			<div class="track" style="height: 340px;">
@@ -24,7 +24,7 @@
 				</div>
 			</div>
 		</div>
-		<hr class="hr-stylish-1"/>
+		<hr class="hr-stylish-1"/> -->
 		<div class="wrapper">
 	    	<div id="scrollbar-two">
 	    		<div class="scrollbar" style="height: 340px;">

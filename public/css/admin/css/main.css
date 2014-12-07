@@ -3050,6 +3050,8 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
   float: left;
   margin-top: 5px;
   margin-bottom: 0; }
+  .sub-nav form.navbar-search {
+    margin: 0px 10px; }
   .navbar-search .search-query {
     margin-bottom: 0;
     padding: 4px 14px;
@@ -3385,23 +3387,24 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 
 .breadcrumb {
   list-style: none;
-  /*padding: 8px 15px;
-  margin: 0 0 5px;
-  background-color: #f4f4f4;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px; */}
-  .breadcrumb > li {
-    display: inline-block;
-    *display: inline;
-    /* IE7 inline-block hack */
-    *zoom: 1;
-    text-shadow: 0 1px 0 white; }
-    .breadcrumb > li > .divider {
-      padding: 0 5px;
-      color: #ccc; }
-  .breadcrumb > .active {
-    color: #999999; }
+  overflow: hidden;
+  font-size: 12px;
+  background: #e6e6e6;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  border: 1px solid #d9d9d9;
+  }
+  .breadcrumb li {
+    float: left; }
+  .breadcrumb li a span{
+    background: #e6e6e6;
+    color: #4d4d4d;
+    padding: 4px 0 4px 48px;
+    position: relative;
+    display: block;
+    float: left;
+  }
 
 .pagination {
   margin: 20px 0; }
@@ -5963,7 +5966,16 @@ header {
           .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate {
             margin: 5px 0;
             float: right; }
-            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .first, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .previous, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .next, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_active, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .last, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_button {
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .first,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .previous,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_enabled_previous,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_disabled_previous,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_enabled_next,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_disabled_next,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .next,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_active,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .last,
+            .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_button {
               background-color: #e6e6e6;
               /* Fallback Color */
               background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#e6e6e6));
@@ -5981,6 +5993,10 @@ header {
               border-top: 1px solid #d9d9d9;
               border-bottom: 1px solid #d9d9d9;
               padding: 7px 10px; }
+              .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_disabled_previous,
+              .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_disabled_next {
+                cursor: not-allowed;
+                opacity: 0.35; }
               .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .first:hover, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .previous:hover, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .next:hover, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_active:hover, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .last:hover, .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTables_paginate .paginate_button:hover {
                 background: #f9f9f9;
                 cursor: pointer; }
@@ -5991,10 +6007,10 @@ header {
           .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTable .sorting {
             cursor: pointer;
             background: url(../img/sorting.png) no-repeat center right; }
-          .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTable .asc {
+          .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTable .sorting_asc {
             cursor: pointer;
             background: url(../img/sorting_asc.png) no-repeat center right; }
-          .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTable .desc {
+          .dashboard-wrapper .left-sidebar .widget .widget-body #dt_example .dataTable .sorting_desc {
             cursor: pointer;
             background: url(../img/sorting_desc.png) no-repeat center right; }
   .dashboard-wrapper .right-sidebar {
@@ -6020,6 +6036,10 @@ header {
       /*  Push Buttons  */
       /*  Doc icons  */
       /*  ICONS page elements end here */ }
+      .dashboard-wrapper .right-sidebar .wrapper .radio {
+        background-color: white;
+        border: 1px solid #cccccc;
+        padding: 2px 0px 2px 10px; }
       .dashboard-wrapper .right-sidebar .wrapper .featured-articles-container {
         background: #f7f7f7;
         padding: 10px; }
@@ -7455,8 +7475,21 @@ p.success {text-align: center;color: green;}
 span.warning {color: red;}
 span.success {color: green;}
 .btn a {color: white;}
-.center {text-align: center;}
+.center {text-align: center!important;}
 .radio label {margin-left: 20px;}
+ul.post_statics {
+  list-style: none;
+  padding: 10px 0px 7px 0px;
+  border-bottom: 1px solid #CCCCCC;
+  border-left: 1px solid #ccc;
+  width: 28%;
+  height: 23px;
+  float: right; }
+  ul.post_statics li{
+    float: right; }
+    ul.post_statics li span {
+      margin: 0px 4px 0px 20px; }
+
 
 
 .dashboard-wrapper .left-sidebar .widget .widget-body .post-container .post {

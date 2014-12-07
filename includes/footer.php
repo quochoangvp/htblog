@@ -9,6 +9,7 @@
 <script src="<?=ADMIN_CSS_URL?>/js/bootstrap.js"></script>
 <script src="<?=ADMIN_CSS_URL?>/js/wysiwyg/bootstrap-wysihtml5.js"></script>
 <script src="<?=ADMIN_CSS_URL?>/js/jquery.scrollUp.js"></script>
+<script src="<?=ADMIN_CSS_URL?>/js/jquery.dataTables.js"></script>
 
 <!-- Google Visualization JS -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -162,60 +163,4 @@
 </script>
 </body>
 </html>
-<?php
-ob_end_flush();
-       /*if(isset($_SESSION['ulevel'])) {
-
-            switch($_SESSION['ulevel']) {
-                case 'owner': // Registered users access
-                    echo '
-                        <li><a href="'.BASE_URL.'/admin/admin.php">Admin CP</a></li>
-                        <li><a href="'.BASE_URL.'/users/profile.php">User Profile</a></li>
-                        <li><a href="'.BASE_URL.'/users/change_password.php">Change Password</a></li>
-                        <li><a href="'.BASE_URL.'/users/logout.php">Log Out</a></li>
-                        ';
-                    break;
-
-                case 'admin':
-                    echo '
-                        <li><a href="'.BASE_URL.'/admin/admin.php">Admin CP</a></li>
-                        <li><a href="'.BASE_URL.'/users/profile.php">User Profile</a></li>
-                        <li><a href="'.BASE_URL.'/users/change_password.php">Change Password</a></li>
-                        <li><a href="'.BASE_URL.'/users/logout.php">Log Out</a></li>
-                    ';
-                    break;
-
-                case 'mod':
-                    echo '
-                        <li><a href="'.BASE_URL.'/admin/admin.php">Admin CP</a></li>
-                        <li><a href="'.BASE_URL.'/users/profile.php">User Profile</a></li>
-                        <li><a href="'.BASE_URL.'/users/change_password.php">Change Password</a></li>
-                        <li><a href="'.BASE_URL.'/users/logout.php">Log Out</a></li>
-                    ';
-                    break;
-
-                case 'normal':
-                    echo '
-                        <li><a href="'.BASE_URL.'/users/profile.php">User Profile</a></li>
-                        <li><a href="'.BASE_URL.'/users/change_password.php">Change Password</a></li>
-                        <li><a href="'.BASE_URL.'/users/logout.php">Log Out</a></li>
-                    ';
-                    break;
-
-                default:
-                    echo '
-                        <li><a href="'.BASE_URL.'/users/register.php">Register</a></li>
-                        <li><a href="'.BASE_URL.'/users/login.php">Login</a></li>
-                    ';
-                    break;
-
-            }
-
-        } else {
-            // Neu khong co $_SESSION
-            echo '
-                <li><a href="'.BASE_URL.'/users/register.php">Register</a></li>
-                <li><a href="'.BASE_URL.'/users/login.php">Login</a></li>
-            ';
-        }*/
-        ?>
+<?php ob_end_flush();?>
