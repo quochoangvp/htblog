@@ -8,16 +8,8 @@
 <div class="left-sidebar">
 <?php
 
-    if (empty($_SESSION['sort'])) {
-        $_SESSION['sort']['by'] = 'cat_id';
-        $_SESSION['sort']['ad'] = 'ASC';
-    }
-
-    $by = $_SESSION['sort']['by'];
-    $ad = $_SESSION['sort']['ad'];
-
-    if (view_cat_list($by, $ad)) {
-        echo view_cat_list($by, $ad);
+    if (view_cat_list()) {
+        echo view_cat_list();
     } else {
         echo '<p class="warning">Không có chuyên mục nào!</p>';
     }

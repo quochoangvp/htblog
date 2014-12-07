@@ -239,7 +239,7 @@ function select_cat_list($category=0,$level=0, $pid = 0) {
     }
 }
 
-function view_cat_list($by, $ad) {
+function view_cat_list() {
     global $con;
     $q = "SELECT c.cat_id, c.cat_name, c.parent_id, DATE_FORMAT(c.time, '%b %d, %Y') AS time, u.username
         FROM categories AS c
