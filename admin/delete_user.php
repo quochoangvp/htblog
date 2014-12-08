@@ -1,9 +1,4 @@
-<?php
-    include_once('../includes/functions.php');
-    get_header();
-    get_nav();
-    admin_access();
-?>
+<?php include_once('../includes/functions.php'); ?>
 <?php
 if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
     $user_id = mysqli_real_escape_string($con,$_GET['uid']);
@@ -31,22 +26,48 @@ if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
 } else {
     redirect_to('admin/manage_users.php');
 }
+    $title = 'Xóa người dùng: ' . $users[0]['username'] . ' &raquo; Admin CP';
+    get_header();
+    get_nav();
+    admin_access();
 ?>
-<div id="content">
-    <h2>Delete user: <?php echo $users[0]['username']; ?></h2>
-    <?php if(!empty($messages)) echo $messages; ?>
-    <form id="del_user" action="" method="post">
-        <fieldset>
-            <legend>Delete</legend>
-                <label for="delete">Are you sure?</label>
-                <div>
-                    <input type="radio" name="delete" value="no" checked="checked" /> No
-                    <input type="radio" name="delete" value="yes" /> Yes
+<div class="dashboard-wrapper">
+<div class="left-sidebar">
+    <div class="row-fluid">
+        <div class="span3"></div>
+        <div class="span6">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Xóa người dùng: <?php echo $users[0]['username']; ?><span class="mini-title"></span></div>
+                    <span class="tools">
+                        <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
+                    </span>
                 </div>
-                <div><input type="submit" name="submit" value="Delete" onclick="return confirm('Are you sure?');" /></div>
-        </fieldset>
-    </form>
-</div><!--end content-->
+                <div class="widget-body">
+                    <?php if(!empty($messages)) echo $messages; ?>
+                    <form id="del_user" class="form-inline no-margin" action="" method="post">
+                        <div class="control-group">
+                            <label for="delete">Bạn chắc chắn muốn xóa người dùng này?</label>
+                            <div class="radio">
+                                <label><input class="radio" type="radio" name="delete" value="no" checked="checked" /> Không</label>
+                                <label><input class="radio" type="radio" name="delete" value="yes" /> Có</label>
+                            </div>
+                        </div>
+                        <div class="form-actions no-margin">
+                            <div class="next-prev-btn-container pull-left" style="margin-left: 10px;">
+                                <a href="manage_users.php" class="button prev" data-original-title="">Trở về</a>
+                            </div>
+                            <input class="btn btn-info pull-right" type="submit" name="submit" value="Xóa" onclick="return confirm('Bạn chắc chắn?');" />
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+                 </div>
+            </div>
+        </div>
+        <div class="span3"></div>
+    </div>
+</div><!--.left-sidebar-->
 <?php
+    get_sidebar('b');
     get_footer();
 ?>

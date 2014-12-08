@@ -1,71 +1,76 @@
 <?php
     include_once('../includes/functions.php');
+    $title = 'Quản lý người dùng &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();
 ?>
-<div id="content">
-    <h2>Manage Users</h2>
-    <?php
-        $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
-        switch ($sort) {
-            case 'name':
-                $order_by = 'username';
-                break;
-
-            case 'email':
-                $order_by = 'email';
-                break;
-
-            case 'level':
-                $order_by = 'level';
-                break;
-
-            case 'time':
-                $order_by = 'reg_time';
-                break;
-
-            default:
-                $order_by = 'username';
-                break;
-        }
-
-        $users = select_data("SELECT user_id, username, email, level, DATE_FORMAT(reg_time, '%b %d %Y') AS time FROM users ORDER BY $order_by ASC");
-        $size = sizeof($users);
-
-        if ($users) {
-    ?>
-
-    <table>
-        <thead>
-            <tr>
-                <th><a href="?sort=name">Username</a></th>
-                <th><a href="?sort=email">Email</th>
-                <th><a href="?sort=level">Level</th>
-                <th><a href="?sort=time">Registraton Time</th>
-                <th>Edit/Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-            for ($i=0; $i < $size; $i++) {
-                echo "
-                    <tr>
-                        <td>{$users[$i]['username']}</td>
-                        <td>{$users[$i]['email']}</td>
-                        <td>{$users[$i]['level']}</td>
-                        <td>{$users[$i]['time']}</td>
-                        <td><a class='edit' href=\"edit_user.php?uid={$users[$i]['user_id']}\">Edit</a>/<a class='delete' href=\"delete_user.php?uid={$users[$i]['user_id']}\">Delete</a></td>
-                    </tr>
-                ";
-            }
-        ?>
-        </tbody>
-    </table>
-    <?php } else {
-        echo '<p class="warning">Không có bài viết nào!</p>';
-    } ?>
-</div><!--end content-->
+<div class="dashboard-wrapper">
+<div class="left-sidebar">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Danh sách bài viết<span class="mini-title"></span></div>
+                    <span class="tools">
+                        <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <?php
+                        $users = select_data("SELECT user_id, username, email, level, DATE_FORMAT(reg_time, '%b %d %Y') AS time FROM users ORDER BY user_id ASC");
+                        $size = sizeof($users);
+                        if ($users) {
+                    ?>
+                    <div id="dt_example" class="example_alt_pagination">
+                        <div id="data-table_wrapper" class="dataTables_wrapper" role="grid">
+                            <table class="table table-condensed table-striped table-hover table-bordered pull-left dataTable" id="data-table" aria-describedby="data-table_info">
+                                <thead>
+                                    <tr>
+                                        <th style="width:2%"><input type="checkbox" class="no-margin"></th>
+                                        <th style="width:8%">ID</th>
+                                        <th style="width:25%">Tên</th>
+                                        <th style="width:25%">Email</th>
+                                        <th style="width:10%">Chức vụ</th>
+                                        <th style="width:20%">Ngày đăng ký</th>
+                                        <th style="width:10%">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php for ($i=0; $i < $size; $i++) { ?>
+                                    <tr>
+                                        <td><input type="checkbox" class="no-margin"></td>
+                                        <td><?=$users[$i]['user_id']?></td>
+                                        <td><span class="name"><?=$users[$i]['username']?></span></td>
+                                        <td><?=$users[$i]['email']?></td>
+                                        <td><span class="label label label-info"><?=$users[$i]['level']?></span></td>
+                                        <td><?=$users[$i]['time']?></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">Tác động<span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="edit_user.php?uid=<?=$users[$i]['user_id']?>" data-original-title="">Sửa</a></li>
+                                                    <li><a href="delete_user.php?uid=<?=$users[$i]['user_id']?>" data-original-title="">Xóa</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <?php } else {
+                        echo '<p class="warning">Không có bài viết nào!</p>';
+                    } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--.left-sidebar-->
 <?php
+    get_sidebar('b');
     get_footer();
 ?>

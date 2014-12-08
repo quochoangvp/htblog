@@ -1,9 +1,4 @@
-<?php
-    include_once('../includes/functions.php');
-    get_header();
-    get_nav();
-    admin_access();
-?>
+<?php include_once('../includes/functions.php'); ?>
 <?php
 if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
 
@@ -48,44 +43,72 @@ if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
 } else {
     redirect_to('admin/manage_users.php');
 }
+    $title = 'Chỉnh sửa người dùng : ' . $users[0]['username'] . ' &raquo; Admin CP';
+    get_header();
+    get_nav();
+    admin_access();
 ?>
-<div id="content">
-    <h2>Edit: <?=$users[0]['username']; ?></h2>
-    <?php if(!empty($messages)) echo $messages; ?>
-        <form id="add_post" action="" method="post">
-            <fieldset>
-                <legend>User info</legend>
-                <div>
-                    <label for="email">Email: <span class="required">*</span>
-                        <?php
-                            if(isset($errors) && in_array('email', $errors)) {
-                                echo "<p class='warning'>Hãy nhập email của người dùng</p>";
-                            }
-                        ?>
-                    </label>
-                    <input type="text" name="email" id="email" value="<?=$users[0]['email']; ?>" maxlength="100" tabindex="1" />
+<div class="dashboard-wrapper">
+<div class="left-sidebar">
+    <div class="row-fluid">
+        <div class="span2"></div>
+        <div class="span8">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Chỉnh sửa người dùng : <?=$users[0]['username']; ?><span class="mini-title"></span></div>
+                    <span class="tools">
+                        <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
+                    </span>
                 </div>
-
-                <div>
-                    <label for="level">Level: <span class="required">*</span>
-                        <?php
-                            if(isset($errors) && in_array('level', $errors)) {
-                                echo '<p class="warning">Chọn một level cho người dùng</p>';
-                            }
-                        ?>
-                    </label>
-
-                    <select name="level" tabindex='2'>
-                        <option <?php if($users[0]['level'] == 'normal') echo 'selected="selected"';?> value="normal">Thành viên</option>
-                        <option <?php if($users[0]['level'] == 'mod') echo 'selected="selected"';?> value="mod">Moderator</option>
-                        <option <?php if($users[0]['level'] == 'admin') echo 'selected="selected"';?> value="admin">Quản trị viên</option>
-                        <option <?php if($users[0]['level'] == 'owner') echo 'selected="selected"';?> value="owner">Chủ nhân</option>
-                    </select>
-                </div>
-            </fieldset>
-            <p><input type="submit" name="submit" value="Edit Post" tabindex="5" /></p>
-        </form>
-</div><!--end content-->
+                <div class="widget-body">
+                    <?php if(!empty($messages)) echo $messages; ?>
+                    <form id="add_post" class="form-horizontal no-margin" action="" method="post">
+                       <div class="control-group">
+                            <label for="email" class="control-label">Email</label>
+                            <div class="controls">
+                                <input type="text" name="email" id="email" class="span4" value="<?=$users[0]['email']; ?>" maxlength="100" tabindex="1" />
+                                <span class="help-inline ">
+                                    <?php
+                                        if(isset($errors) && in_array('email', $errors)) {
+                                            echo "<p class='warning'>Hãy nhập email của người dùng</p>";
+                                        }
+                                    ?>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="level" class="control-label">Chức vụ</label>
+                            <div class="controls">
+                                <select name="level" class="span4" tabindex="2">
+                                    <option <?php if($users[0]['level'] == 'normal') echo 'selected="selected"';?> value="normal">Thành viên</option>
+                                    <option <?php if($users[0]['level'] == 'mod') echo 'selected="selected"';?> value="mod">Moderator</option>
+                                    <option <?php if($users[0]['level'] == 'admin') echo 'selected="selected"';?> value="admin">Quản trị viên</option>
+                                    <option <?php if($users[0]['level'] == 'owner') echo 'selected="selected"';?> value="owner">Chủ nhân</option>
+                                </select>
+                                <span class="help-inline ">
+                                    <?php
+                                        if(isset($errors) && in_array('level', $errors)) {
+                                            echo '<p class="warning">Chọn một chức vụ cho người dùng</p>';
+                                        }
+                                    ?>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-actions no-margin">
+                            <div class="next-prev-btn-container pull-left" style="margin-left: -150px;">
+                                <a href="manage_users.php" class="button prev" data-original-title="">Trở về</a>
+                            </div>
+                            <input class="btn btn-info pull-right" type="submit" name="submit" value="Sửa" tabindex="3" />
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+                 </div>
+            </div>
+        </div>
+        <div class="span2"></div>
+    </div>
+</div><!--.left-sidebar-->
 <?php
+    get_sidebar('b');
     get_footer();
 ?>

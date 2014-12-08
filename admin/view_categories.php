@@ -1,5 +1,6 @@
 ﻿<?php
     include_once('../includes/functions.php');
+    $title = 'Quản lý thể loại &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();

@@ -5,13 +5,6 @@
     get_nav();
     admin_access();
 
-    if (empty($_SESSION['psort'])) {
-        $_SESSION['psort']['by'] = 'post_id';
-        $_SESSION['psort']['ad'] = 'ASC';
-    }
-
-    $by = $_SESSION['psort']['by'];
-    $ad = $_SESSION['psort']['ad'];
 ?>
 <div class="dashboard-wrapper">
 <div class="left-sidebar">
@@ -60,8 +53,8 @@
                                         <td><span class="name"><?=$posts[$i]['post_name']?></span></td>
                                         <td class="center"><?=$posts[$i]['time']?></td>
                                         <td class="center"><?=$posts[$i]['username']?></td>
-                                        <td class="hidden-phone"><?=the_excerpt($posts[$i]['content'])?></td>
-                                        <td class="hidden-phone"><a href="<?=BASE_URL?>/category.php?cid=<?=$posts[$i]['cat_id']?>"><?=$posts[$i]['cat_name']?></a></td>
+                                        <td><?=the_excerpt($posts[$i]['content'])?></td>
+                                        <td><a href="<?=BASE_URL?>/category.php?cid=<?=$posts[$i]['cat_id']?>"><?=$posts[$i]['cat_name']?></a></td>
                                         <td class="center"><?php
                                             if($posts[$i]['status'] == 'publish') echo '<span class="label label label-success">Công khai</span>';
                                             if($posts[$i]['status'] == 'draft') echo '<span class="label label label-warning">Bản nháp</span>';

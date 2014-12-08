@@ -1,65 +1,82 @@
 <?php
     include_once('../includes/functions.php');
+    $title = 'Thùng rác &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();
 ?>
-<div id="content">
-    <h2>Trash</h2>
-    <?php
-        $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
-        switch ($sort) {
-            case 'name':   $order_by = 'trash_name'; break;
-            case 'time':   $order_by = 'time';       break;
-            case 'author': $order_by = 'username';   break;
-            case 'status': $order_by = 'status';     break;
-            case 'type':   $order_by = 'type';       break;
-            default:       $order_by = 'trash_name'; break;
-        }
-    ?>
-    <?php
+<div class="dashboard-wrapper">
+<div class="left-sidebar">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Thùng rác<span class="mini-title"></span></div>
+                    <span class="tools">
+                        <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <?php
+                    $q = "SELECT t.trash_id, t.trash_name, t.content, t.status, t.type, u.username";
+                        $q .= " FROM trash AS t ";
+                        $q .= " JOIN users AS u ";
+                        $q .= " USING(user_id) ";
+                        $q .= " ORDER BY trash_id ASC";
+                    $posts = select_data($q);
+                    $size = sizeof($posts);
 
-    $q = "SELECT t.trash_id, t.trash_name, t.content, t.status, t.type, u.username";
-        $q .= " FROM trash AS t ";
-        $q .= " JOIN users AS u ";
-        $q .= " USING(user_id) ";
-        $q .= " ORDER BY {$order_by} ASC";
-    $posts = select_data($q);
-    $size = sizeof($posts);
-
-    if ($posts) { ?>
-    <table>
-        <thead>
-            <tr>
-                <th><a href="?sort=name">Pages</a></th>
-                <th><a href="?sort=author">Posted by</th>
-                <th>Content</th>
-                <th><a href="?sort=status">Status</th>
-                <th><a href="?sort=type">Type</th>
-                <th>Restore/Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-            for ($i=0; $i < $size; $i++) {
-                echo "
-                    <tr>
-                        <td>{$posts[$i]['trash_name']}</td>
-                        <td>{$posts[$i]['username']}</td>
-                        <td>{$posts[$i]['content']}</td>
-                        <td>{$posts[$i]['status']}</td>
-                        <td>{$posts[$i]['type']}</td>
-                        <td><a class='restore' href=\"restore.php?id={$posts[$i]['trash_id']}\">Restore</a>/<a class='delete' href=\"delete.php?id={$posts[$i]['trash_id']}\">Delete</a></td>
-                    </tr>
-                ";
-            }
-        ?>
-        </tbody>
-    </table>
-    <?php } else {
-        echo '<p class="warning">Thùng rác trống!</p>';
-    } ?>
-</div><!--end content-->
+                    if ($posts) { ?>
+                    <div id="dt_example" class="example_alt_pagination">
+                        <div id="data-table_wrapper" class="dataTables_wrapper" role="grid">
+                            <table class="table table-condensed table-striped table-hover table-bordered pull-left dataTable" id="data-table" aria-describedby="data-table_info">
+                                <thead>
+                                    <tr>
+                                        <th style="width:2%"><input type="checkbox" class="no-margin"></th>
+                                        <th style="width:16%">Tên</th>
+                                        <th style="width:10%">Người đăng</th>
+                                        <th style="width:35%" class="center">Nội dung</th>
+                                        <th style="width:9%">Trạng thái</th>
+                                        <th style="width:10%">Loại</th>
+                                        <th style="width:9%">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php for ($i=0; $i < $size; $i++) { ?>
+                                    <tr class="gradeA odd">
+                                        <td><input type="checkbox" class="no-margin"></td>
+                                        <td><span class="name"><?=$posts[$i]['trash_name']?></span></td>
+                                        <td class="center"><?=$posts[$i]['username']?></td>
+                                        <td><?=the_excerpt($posts[$i]['content'])?></td>
+                                        <td><?=($posts[$i]['status'] == 'draft') ? '<span class="label label label-warning">Nháp</span>' : '<span class="label label label-success">Công khai</span>';?></td>
+                                        <td><?=($posts[$i]['type'] == 'posts') ? '<span class="label label label-success">Bài viết</span>' : ''; ?></td>
+                                        <td class="hidden-phone">
+                                            <div class="btn-group">
+                                                <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">Thao tác
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="restore.php?id=<?=$posts[$i]['trash_id']?>" data-original-title="">Khôi phục</a></li>
+                                                    <li><a href="delete.php?id=<?=$posts[$i]['trash_id']?>" data-original-title="">Xóa vĩnh viễn</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <?php } else {
+                        echo '<p class="warning">Thùng rác trống!</p>';
+                    } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--.left-sidebar-->
 <?php
+    get_sidebar('b');
     get_footer();
 ?>

@@ -1,9 +1,4 @@
-<?php
-    include_once('../includes/functions.php');
-    get_header();
-    get_nav();
-    admin_access();
-?>
+<?php include_once('../includes/functions.php'); ?>
 <?php
 if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
     $messages = array();
@@ -61,11 +56,16 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
 } else {
     redirect_to('admin/view_categories.php');
 }
+    $title = 'Xóa thể loại: ' . $cats[0]['cat_name'] . ' &raquo; Admin CP';
+    get_header();
+    get_nav();
+    admin_access();
 ?>
 <div class="dashboard-wrapper">
 <div class="left-sidebar">
     <div class="row-fluid">
-        <div class="span12">
+        <div class="span3"></div>
+        <div class="span6">
             <div class="widget">
                 <div class="widget-header">
                     <div class="title">Xóa thể loại: <?=$cats[0]['cat_name']?><span class="mini-title"></span></div>
@@ -94,13 +94,17 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
                         </div>
                         <?php } ?>
                         <div class="form-actions no-margin">
-                            <input class="btn btn-info pull-right" type="submit" name="submit" value="Xóa" onclick="return confirm('Are you sure?');" />
+                            <div class="next-prev-btn-container pull-left" style="margin-left: 10px;">
+                                <a href="view_categories.php" class="button prev" data-original-title="">Trở về</a>
+                            </div>
+                            <input class="btn btn-info pull-right" type="submit" name="submit" value="Xóa" onclick="return confirm('Bạn chắc chắn?');" />
                             <div class="clearfix"></div>
                         </div>
                     </form>
-                 </div>
+                </div>
             </div>
         </div>
+        <div class="span3"></div>
     </div>
 </div><!--.left-sidebar-->
 <?php

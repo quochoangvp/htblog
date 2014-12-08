@@ -5,6 +5,7 @@
 if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
 
     $cat_id = mysqli_real_escape_string($con,$_GET['cid']);
+    $cats = select_data("SELECT cat_name, parent_id FROM categories WHERE cat_id = {$cat_id}");
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors  = array();
@@ -47,7 +48,6 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
 }
 ?>
 <?php
-    $cats = select_data("SELECT cat_name, parent_id FROM categories WHERE cat_id = {$cat_id}");
     $title = 'Sửa thể loại: ' . $cats[0]['cat_name'] . ' &raquo; Admin CP';
     get_header();
     get_nav();
@@ -83,9 +83,9 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
                         <div class="control-group">
                             <label for="parent" class="control-label">Thể loại mẹ</label>
                             <div class="controls">
-                                <select name="parent_id" class="span4" tabindex='2'>
-                                    <option value="">Choose a Category</option>
-                                    <option value="0" <?php if($cats[0]['parent_id'] == 0) echo 'selected="selected"' ?>>Root Parent</option>
+                                <select name="parent_id" class="span4" tabindex="2">
+                                    <option value="">Chọn một thể loại</option>
+                                    <option value="0" <?php if($cats[0]['parent_id'] == 0) echo 'selected="selected"' ?>>Root</option>
                                     <?php
                                         select_cat_list(0,0,$cats[0]['parent_id']);
                                     ?>
@@ -93,13 +93,16 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
                                 <span class="help-inline ">
                                     <?php
                                         if(isset($errors) && in_array('parent_id', $errors)) {
-                                            echo "<span class='warning'>Please pick a parent category</span>";
+                                            echo "<span class='warning'>Vui lòng chọn một thư mục mẹ</span>";
                                         }
                                     ?>
                                 </span>
                             </div>
                         </div>
                         <div class="form-actions no-margin">
+                            <div class="next-prev-btn-container pull-left" style="margin-left: -150px;">
+                                <a href="view_categories.php" class="button prev" data-original-title="">Trở về</a>
+                            </div>
                             <input class="btn btn-info pull-right" type="submit" name="submit" value="Sửa" tabindex="3" />
                             <div class="clearfix"></div>
                         </div>

@@ -110,8 +110,8 @@
         <div class="wrapper">
             <label for="post" class="center">Chọn trạng thái</label>
             <div class="radio">
-                <label><input class="radio" type="radio" name="status" value="draft" tabindex="4" <?php if(isset($clean['status']) && $clean['status']=='draft') echo 'checked="checked"'; ?> />Nháp</label>
-                <label><input class="radio" type="radio" name="status" value="publish" <?php if(isset($clean['status']) && $clean['status']=='publish') echo 'checked="checked"'; ?> />Công khai</label>
+                <label><input class="radio" type="radio" name="status" value="draft" tabindex="3" <?php if(isset($clean['status']) && $clean['status']=='draft') echo 'checked="checked"'; ?> />Nháp</label>
+                <label><input class="radio" type="radio" name="status" value="publish" tabindex="4" <?php if(isset($clean['status']) && $clean['status']=='publish') echo 'checked="checked"'; ?> />Công khai</label>
             </div>
             <?php
                 if(isset($errors) && in_array('status', $errors)) {

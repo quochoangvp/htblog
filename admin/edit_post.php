@@ -1,13 +1,9 @@
-<?php
-    include_once('../includes/functions.php');
-    get_header();
-    get_nav();
-    admin_access();
-?>
+<?php include_once('../includes/functions.php'); ?>
 <?php
 if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
 
     $post_id = mysqli_real_escape_string($con,$_GET['pid']);
+    $posts = select_data("SELECT post_name, cat_id, content, status FROM posts WHERE post_id = {$post_id}");
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors  = array();
@@ -58,73 +54,89 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
 } else {
     redirect_to('admin/view_posts.php');
 }
+    $title = 'Chỉnh sửa: ' . $posts[0]['post_name'] . ' &raquo; Admin CP';
+    get_header();
+    get_nav();
+    admin_access();
 ?>
-<?php
-    $posts = select_data("SELECT post_name, cat_id, content, status FROM posts WHERE post_id = {$post_id}");
-?>
-<div id="content">
-    <h2>Edit post: <?=$posts[0]['post_name']; ?></h2>
-    <?php if(!empty($messages)) echo $messages; ?>
-        <form id="add_post" action="" method="post">
-            <fieldset>
-                <legend>Edit a Post</legend>
-                    <div>
-                        <label for="post">Post Name: <span class="required">*</span>
-                            <?php
-                                if(isset($errors) && in_array('post_name', $errors)) {
-                                    echo "<p class='warning'>Please fill in the post name</p>";
-                                }
-                            ?>
-                        </label>
-                        <input type="text" name="post_name" id="post_name" value="<?=$posts[0]['post_name']; ?>" maxlength="255" tabindex="1" />
+<div class="dashboard-wrapper">
+    <form id="add_post" class="form-horizontal no-margin" action="" method="post">
+    <div class="left-sidebar">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget">
+                    <div class="widget-header">
+                        <div class="title">Chỉnh sửa: <?=$posts[0]['post_name']; ?><span class="mini-title"><?php if(isset($errors) && in_array('content', $errors)) { echo "<p class='warning'>Vui lòng nhập nội dung</p>"; } ?></span></div>
+                        <span class="tools">
+                            <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
+                        </span>
                     </div>
-
-                    <div>
-                        <label for="cat_id">All categories: <span class="required">*</span>
-                            <?php
-                                if(isset($errors) && in_array('cat_id', $errors)) {
-                                    echo "<p class='warning'>Please pick a category</p>";
-                                }
-                            ?>
-                        </label>
-
-                        <select name="cat_id" tabindex='2'>
-                            <option value="">Choose a Category</option>
-                            <?php
-                                select_cat_list(0,0,$posts[0]['cat_id']);
-                            ?>
-                        </select>
+                    <div class="widget-body">
+                        <div>
+                            <textarea name="content" cols="50" rows="20"><?=$posts[0]['content']; ?></textarea>
+                        </div>
+                        <div class="form-actions no-margin">
+                            <div class="next-prev-btn-container pull-left" style="margin-left: -150px;">
+                                <a href="view_posts.php" class="button prev" data-original-title="">Trở về</a>
+                            </div>
+                            <input class="btn btn-info pull-right" type="submit" name="submit" value="Lưu" tabindex="5" />
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
-
-                    <div>
-                        <label for="post-content">Post Content: <span class="required">*</span>
-                            <?php
-                                if(isset($errors) && in_array('content', $errors)) {
-                                    echo "<p class='warning'>Please fill in the content</p>";
-                                }
-                            ?>
-                        </label>
-                        <textarea name="content" cols="50" rows="20"><?=$posts[0]['content']; ?></textarea>
-                    </div>
-
-                    <div>
-                        <label for="status">Trạng thái: <span class="required">*</span>
-                            <?php
-                                if(isset($errors) && in_array('status', $errors)) {
-                                    echo "<p class='warning'>Hãy chọn trạng thái của bài viết</p>";
-                                }
-                            ?>
-                        </label>
-
-                        <select name="status" tabindex='4'>
-                            <option <?php if($posts[0]['status'] == 'draft') echo 'selected="selected"'; ?> value="draft">Nháp</option>
-                            <option <?php if($posts[0]['status'] == 'publish') echo 'selected="selected"'; ?> value="publish">Công khai</option>
-                        </select>
-                    </div>
-            </fieldset>
-            <p><input type="submit" name="submit" value="Edit Post" tabindex="5" /></p>
-        </form>
-</div><!--end content-->
+                </div>
+            </div>
+        </div>
+    </div><!--.left-sidebar-->
+    <div class="right-sidebar">
+        <?php if(!empty($messages)) echo '<div class="wrapper">'.$messages.'</div><hr class="hr-stylish-1"/>'; ?>
+        <div class="wrapper">
+            <label for="post" class="center">Tên bài viết</label>
+            <input type="text" name="post_name" id="post_name" class="input-block-level" value="<?=$posts[0]['post_name']; ?>" maxlength="255" tabindex="1" />
+            <?php
+                if(isset($errors) && in_array('post_name', $errors)) {
+                    echo "<p class='warning'>Vui lòng nhập tên bài viết</p>";
+                }
+            ?>
+        </div>
+        <hr class="hr-stylish-1"/>
+        <div class="wrapper">
+            <label for="cat_id" class="center">Tất cả thể loại</label>
+            <select name="cat_id" class="input-block-level" tabindex="2">
+                <option value="">Chọn một thể loại</option>
+                <?php
+                    select_cat_list(0,0,$posts[0]['cat_id']);
+                ?>
+            </select>
+        </div>
+        <hr class="hr-stylish-1"/>
+        <div class="wrapper">
+            <label for="status" class="center">Trạng thái</label>
+            <div class="radio">
+                <label><input class="radio" type="radio" name="status" value="draft" tabindex="3" <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        if(isset($clean['status']) && $clean['status']=='draft') echo 'checked="checked"';
+                    } else {
+                        if($posts[0]['status'] == 'draft') echo 'checked="checked"';
+                    }
+                    ?> />Nháp</label>
+                <label><input class="radio" type="radio" name="status" value="publish" tabindex="4" <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        if(isset($clean['status']) && $clean['status']=='publish') echo 'checked="checked"';
+                    } else {
+                        if($posts[0]['status'] == 'publish') echo 'checked="checked"';
+                    }
+                    ?> />Công khai</label>
+            </div>
+            <?php
+                if(isset($errors) && in_array('status', $errors)) {
+                    echo "<p class='warning'>Hãy chọn trạng thái của bài viết</p>";
+                }
+            ?>
+        </div>
+    </div>
+</form>
+<div class="clearfix"></div>
+</div><!-- .dashboard-wrapper -->
 <?php
     get_footer();
 ?>

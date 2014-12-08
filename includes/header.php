@@ -24,20 +24,12 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="<?=JS_URL?>/jquery.min.js"></script>
     <script type="text/javascript" src="<?=JS_URL?>/tinymce/tinymce.min.js"></script>
-<?php if(current_file() == 'view_categories.php') { ?>
+<?php $arr = array('view_categories.php', 'view_posts.php', 'manage_users.php', 'trash.php');
+      if(in_array(current_file(), $arr)) { ?>
     <script type="text/javascript">
         $(document).ready(function() {
             $('#data-table').dataTable({
                 "order": [[ 0, "asc" ]],
-                "sPaginationType": "full_numbers"
-            });
-        } );
-    </script>
-<?php } if(current_file() == 'view_posts.php') { ?>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#data-table').dataTable({
-                "order": [[ 2, "desc" ]],
                 "sPaginationType": "full_numbers"
             });
         } );
