@@ -1,6 +1,4 @@
-<?php
-    include_once('includes/functions.php');
-?>
+<?php include_once('includes/functions.php'); ?>
 <?php
     if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
         $cid = (int)$_GET['cid'];
@@ -37,12 +35,13 @@
                                         <div class="img-container"><img src="'.ADMIN_CSS_URL.'/img/profile.jpg" alt=""></div>
                                         <article>
                                             <h5 class="no-margin"><a href="single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></h5>
-                                            <p class="no-margin">'.the_excerpt($posts[$i]['content'],450).' <a href="single.php?pid='.$posts[$i]['post_id'].'">Read more</a></p>
+                                            <p class="no-margin">'.the_excerpt($posts[$i]['content'],420).' <a href="single.php?pid='.$posts[$i]['post_id'].'">Xem thêm</a></p>
                                         </article>
                                         <div class="icons-nav">
                                             <ul>
-                                                <li><strong>Posted by:</strong> <a href="author.php?aid='.$posts[$i]['user_id'].'"> '.$posts[$i]['username'].'</a></li>
-                                                <li><strong>On: </strong> '.$posts[$i]['post_time'].' </li>
+                                                <li><strong>Người đăng:</strong> <a href="author.php?aid='.$posts[$i]['user_id'].'"> '.$posts[$i]['username'].'</a></li>
+                                                <li><strong>Ngày đăng: </strong> '.$posts[$i]['post_time'].' </li>
+                                                <li><strong>Lượt xem: </strong> '.getPostView($posts[$i]['post_id']).'</li>
                                             </ul>
                                         </div>
                                     </div>';

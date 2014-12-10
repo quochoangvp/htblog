@@ -1,10 +1,4 @@
-<?php
-    include_once('includes/functions.php');
-    get_header();
-    get_nav();
-    get_sidebar('a');
-?>
-<div id="content">
+<?php include_once('includes/functions.php'); ?>
 <?php
 	if (isset($_GET['aid']) && validate_int($_GET['aid'])) {
 		$aid = (int)$_GET['aid'];
@@ -17,24 +11,56 @@
 		$num_posts = num_rows("SELECT post_id FROM posts WHERE user_id = {$aid}");
 	    $num_pages = ceil($num_posts/$post_per_page);
 
-		if ($posts) {
-			for ($i=0; $i<sizeof($posts); $i++) {
-				echo '<div class="post">
-						<h2><a href="single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></h2>
-						<p>'.the_excerpt($posts[$i]['content'],300).' <a href="single.php?pid='.$posts[$i]['post_id'].'">Read more</a></p>
-						<p class="meta"><strong>Posted by:</strong> <a href="author.php?aid='.$posts[$i]['user_id'].'"> '.$posts[$i]['username'].'</a> | <strong>On: </strong> '.$posts[$i]['post_time'].' </p>
-	                  </div>';
-			}
-			pagination('author.php?aid='.$aid);
+	    $title = 'Tất cả bài viết của "' . $posts[0]['username'] . '"';
+	    get_header();
+	    get_nav();
+?>
+<div class="dashboard-wrapper">
+<div class="left-sidebar">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Tất cả bài viết của "<?=$posts[0]['username']?>"<span class="mini-title"></span></div>
+                    <span class="tools">
+                        <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="post-container">
+						<?php
+						if ($posts) {
+							for ($i=0; $i<sizeof($posts); $i++) {
+								echo '<div class="post">
+                                        <div class="img-container"><img src="'.ADMIN_CSS_URL.'/img/profile.jpg" alt=""></div>
+                                        <article>
+                                            <h5 class="no-margin"><a href="single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></h5>
+                                            <p class="no-margin">'.the_excerpt($posts[$i]['content'],420).' <a href="single.php?pid='.$posts[$i]['post_id'].'">Xem thêm</a></p>
+                                        </article>
+                                        <div class="icons-nav">
+                                            <ul>
+                                                <ul>
+                                                <li><strong>Ngày đăng: </strong> '.$posts[$i]['post_time'].' </li>
+                                                <li><strong>Lượt xem: </strong> '.getPostView($posts[$i]['post_id']).'</li>
+                                            </ul>
+                                        </div>
+                                    </div>';
+							}
+							pagination('author.php?aid='.$aid);
 
-		} else {
-			echo '<p class="warning">Khong co bai viet nao trong muc nay!</p>';
-		}
+						} else {
+							echo '<p class="warning">Không có bài viết nào trong mục này!</p>';
+						}
+					echo '</div>';
 	} else {
 		redirect_to();
 	}
 ?>
-</div> <!-- end #content -->
+				</div>
+            </div>
+        </div>
+    </div>
+</div><!--.left-sidebar-->
 <?php
     get_sidebar('b');
     get_footer();

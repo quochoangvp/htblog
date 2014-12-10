@@ -51,6 +51,13 @@
             </div>
         </div>
     </div>
+    <div class="row-fluid">
+    	<?php
+    		same_cat_posts($post[0]['cat_id'], $pid);
+    		related_posts($post[0]['cat_id'], $pid);
+    		related_posts($post[0]['cat_id'], $pid);
+		?>
+    </div>
 </div><!--.left-sidebar-->
 <?php
     get_sidebar('b');

@@ -475,7 +475,6 @@ function breadcrumb($cid) {
 }
 
 function setPostView($post_id) {
-    global $con;
     $ip       = $_SERVER["REMOTE_ADDR"];
     $agent    = $_SERVER["HTTP_USER_AGENT"];
     $datetime = date("Y-m-d") . ' ' . date('H:i:s');
@@ -493,4 +492,48 @@ function getUserView($post_id) {
     $ip       = $_SERVER["REMOTE_ADDR"];
     $postview = select_data("SELECT value FROM visitors WHERE ip_address = '{$ip}' AND post_id = {$post_id}");
     return $postview[0]['value'];
+}
+function same_cat_posts($cid, $pid) {
+    $posts = select_data("SELECT post_id, post_name FROM posts WHERE cat_id = {$cid} AND post_id != {$pid} ORDER BY rand() LIMIT 5");
+    echo '
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Bài viết cùng thể loại<a id="lists" data-original-title=""></a></div>
+                    <span class="tools"><a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a></span>
+                </div>
+                <div class="widget-body">
+                    <div class="stylish-lists">
+                        <ul>';
+    for ($i=0; $i < sizeof($posts); $i++) {
+        echo '<li><a href="'.BASE_URL.'/single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></li>';
+    }
+    echo '
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>';
+}
+function related_posts($cid, $pid) {
+    $posts = select_data("SELECT post_id, post_name FROM posts WHERE cat_id = {$cid} AND post_id != {$pid} ORDER BY rand() LIMIT 5");
+    echo '
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <div class="title">Bài viết liên quan<a id="lists" data-original-title=""></a></div>
+                    <span class="tools"><a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a></span>
+                </div>
+                <div class="widget-body">
+                    <div class="stylish-lists">
+                        <ul>';
+    for ($i=0; $i < sizeof($posts); $i++) {
+        echo '<li><a href="'.BASE_URL.'/single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></li>';
+    }
+    echo '
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>';
 }

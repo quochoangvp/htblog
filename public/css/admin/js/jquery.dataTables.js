@@ -9287,7 +9287,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
 		
 		
 			/**
@@ -9407,7 +9407,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Hiển thị _MENU_ mục",
+			"sLengthMenu": "Show _MENU_ entries",
 		
 		
 			/**
@@ -9481,7 +9481,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Tìm kiếm:",
+			"sSearch": "Search:",
 		
 		
 			/**
