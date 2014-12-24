@@ -38,6 +38,10 @@ session_start();
     <script src="<?=ADMIN_CSS_URL?>/js/bootstrap.js"></script>
     <script type="text/javascript" src="<?=JS_URL?>/tinymce/tinymce.min.js"></script>
     <script src="<?=ADMIN_CSS_URL?>/js/tiny-scrollbar.js"></script>
+    <?php if (current_file() == 'profile.php'): ?>
+    <script type="text/javascript" src="<?=JS_URL?>/jquery.form.js"></script>
+    <script type="text/javascript" src="<?=JS_URL?>/edit-profile.js"></script>
+    <?php endif ?>
 
     <?php $arr = array('view_categories.php', 'view_posts.php', 'manage_users.php', 'trash.php');
     if(in_array(current_file(), $arr)) { ?>
@@ -92,45 +96,6 @@ session_start();
         $('#scrollbar-one').tinyscrollbar();
         $('#scrollbar-two').tinyscrollbar();
         $('#scrollbar-three').tinyscrollbar();
-
-        //Xeditable form fields
-        $.fn.editable.defaults.mode = 'inline';
-        $('#username').click(function(event) {
-            event.preventDefault();
-        });;
-        $('#email').editable({
-            validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Mục này không được để trống';
-                }
-            },
-            success: function(response, newValue) {
-                if(response.status == 'success') return response.msg; //msg will be shown in editable form
-            }
-        });
-        $('#password').editable({
-            validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Mục này không được để trống';
-                }
-            }
-        });
-        $('#repassword').editable({
-            validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Mục này không được để trống';
-                }
-            }
-        });
-        $('#fullname').editable({
-            validate: function(value) {
-                if($.trim(value) == '') {
-                    return 'Mục này không được để trống';
-                }
-            }
-        });
-        $('#address').editable();
-        $('#about').editable();
     });
 </script>
 </head>

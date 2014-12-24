@@ -152,9 +152,9 @@ function check_data_exist($column, $table, $where) {
  * @param  string $values Dữ liệu cần chèn
  * @return boolean         Trả về đúng hoặc sai
  */
-function insert_data($table, $keys, $values) {
+function insert_data($table, $keys, $values, $where=1) {
     global $con;
-    $q = "INSERT INTO $table $keys VALUES $values";
+    $q = "INSERT INTO $table $keys VALUES $values WHERE $where";
     $r = mysqli_query($con,$q);
     confirm_query($r,$q);
     if (mysqli_affected_rows($con) > 0) {

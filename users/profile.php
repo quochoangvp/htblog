@@ -5,7 +5,7 @@
     get_nav();
 
     $user_id = $_SESSION['uid'];
-    $users = select_data("SELECT username, email, fullname, address, level, about, reg_time FROM users WHERE user_id = {$user_id} LIMIT 1");
+    $users = select_data("SELECT username, email, fullname, avatar, address, level, about, reg_time FROM users WHERE user_id = {$user_id} LIMIT 1");
 ?>
 <div class="dashboard-wrapper">
 <div class="left-sidebar">
@@ -18,17 +18,19 @@
                         <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                     </span>
                 </div>
+                <div id="message-ajax"></div>
                 <div class="widget-body">
                     <div class="container-fluid">
                         <div class="row-fluid">
                             <div class="span3">
                                 <div class="thumbnail">
-                                    <img alt="300x200" src="<?=ADMIN_CSS_URL?>/img/profile.png"/>
-                                    <div class="caption">
-                                        <p class="no-margin">
-                                            <a href="#" class="btn btn-info" data-original-title="">Save</a>
-                                            <a href="#" class="btn" data-original-title="">Cancel</a>
-                                        </p>
+                                    <div id="preview">
+                                        <img src="<?=BASE_URL?>/public/images/uploads/<?=empty($users[0]['avatar']) ? 'profile.png' : $users[0]['avatar'];?>" alt="user photo" />
+                                    </div>
+                                    <div title="Nhấn vào ảnh để thay ảnh đại diện" class="photoimg">
+                                        <form id="imageform" method="post" enctype="multipart/form-data" action="ajaximage.php">
+                                            <input type="file" name="photoimg" id="photoimg" />
+                                        </form>
                                     </div>
                                 </div>
                             </div>
