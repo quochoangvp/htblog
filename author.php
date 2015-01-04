@@ -32,7 +32,7 @@
 						if ($posts) {
 							for ($i=0; $i<sizeof($posts); $i++) {
 								echo '<div class="post">
-                                        <div class="img-container"><img src="'.ADMIN_CSS_URL.'/img/profile.jpg" alt=""></div>
+                                        <div class="img-container"><img src="'.ADMIN_CSS_URL.'img/profile.jpg" alt=""></div>
                                         <article>
                                             <h5 class="no-margin"><a href="single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></h5>
                                             <p class="no-margin">'.the_excerpt($posts[$i]['content'],420).' <a href="single.php?pid='.$posts[$i]['post_id'].'">Xem thêm</a></p>

@@ -85,7 +85,7 @@
                                 <div class="header">
                                     <div class="row-fluid">
                                         <div class="span12">
-                                            <h3>Đăng ký<img src="<?=ADMIN_CSS_URL?>/img/logo1.png" alt="Logo" class="pull-right"></h3>
+                                            <h3>Đăng ký<img src="<?=ADMIN_CSS_URL?>img/logo1.png" alt="Logo" class="pull-right"></h3>
                                             <p>Nhập đầy đủ và thông tin một cách chính xác để đăng ký.</p>
                                         </div>
                                     </div>

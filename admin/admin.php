@@ -33,7 +33,7 @@
 									</a>
 								</div>
 								<div class="metro-nav-block nav-block-orange">
-									<a href="<?=BASE_URL?>/admin/add_categories.php" data-original-title="">
+									<a href="<?=BASE_URL?>admin/add_categories.php" data-original-title="">
 										<div class="fs1" aria-hidden="true" data-icon=""></div>
 										<div class="brand">
 											Thêm thể loại
@@ -41,7 +41,7 @@
 									</a>
 								</div>
 								<div class="metro-nav-block nav-block-blue double">
-									<a href="<?=BASE_URL?>/admin/view_categories.php" data-original-title="">
+									<a href="<?=BASE_URL?>admin/view_categories.php" data-original-title="">
 										<div class="fs1" aria-hidden="true" data-icon=""></div>
 										<div class="brand">
 											DS thể loại
@@ -49,7 +49,7 @@
 									</a>
 								</div>
 								<div class="metro-nav-block nav-block-green">
-									<a href="<?=BASE_URL?>/admin/add_posts.php" data-original-title="">
+									<a href="<?=BASE_URL?>admin/add_posts.php" data-original-title="">
 										<div class="fs1" aria-hidden="true" data-icon=""></div>
 										<div class="brand">
 											Thêm bài viết
@@ -57,7 +57,7 @@
 									</a>
 								</div>
 								<div class="metro-nav-block nav-block-red">
-									<a href="<?=BASE_URL?>/admin/view_posts.php" data-original-title="">
+									<a href="<?=BASE_URL?>admin/view_posts.php" data-original-title="">
 										<div class="fs1" aria-hidden="true" data-icon=""></div>
 										<div class="brand">
 											DS bài viết
@@ -65,7 +65,7 @@
 									</a>
 								</div>
 								<div class="metro-nav-block nav-block-red double">
-									<a href="<?=BASE_URL?>/admin/manage_users.php" data-original-title="">
+									<a href="<?=BASE_URL?>admin/manage_users.php" data-original-title="">
 										<div class="fs1" aria-hidden="true" data-icon=""></div>
 										<div class="brand">
 											Quản lý người dùng
@@ -73,7 +73,7 @@
 									</a>
 								</div>
 								<div class="metro-nav-block nav-block-green">
-									<a href="<?=BASE_URL?>/admin/trash.php" data-original-title="">
+									<a href="<?=BASE_URL?>admin/trash.php" data-original-title="">
 										<div class="fs1" aria-hidden="true" data-icon=""></div>
 										<div class="brand">
 											Thùng rác

@@ -23,33 +23,38 @@ session_start();
     <title><?php echo (isset($GLOBALS['title'])) ? $GLOBALS['title'] : "Trang chủ"; ?> &raquo; HTBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="<?=ADMIN_CSS_URL?>/icomoon/style.css" rel="stylesheet">
+    <link href="<?=ADMIN_CSS_URL?>icomoon/style.css" rel="stylesheet">
     <!--[if lte IE 7]>
-    <script src="<?=ADMIN_CSS_URL?>/css/icomoon-font/lte-ie7.js">
+    <script src="<?=ADMIN_CSS_URL?>css/icomoon-font/lte-ie7.js">
     </script>
     <![endif]-->
 
-    <link href="<?=ADMIN_CSS_URL?>/css/main.css" rel="stylesheet"> <!-- Important. For Theming change primary-color variable in main.css  -->
+    <link href="<?=ADMIN_CSS_URL?>css/main.css" rel="stylesheet"> <!-- Important. For Theming change primary-color variable in main.css  -->
     <?php if (current_file() == 'profile.php'): ?>
-        <link href="<?=ADMIN_CSS_URL?>/css/bootstrap-editable.css" rel="stylesheet"/>
+        <link href="<?=ADMIN_CSS_URL?>css/bootstrap-editable.css" rel="stylesheet"/>
     <?php endif ?>
 
-    <script type="text/javascript" src="<?=JS_URL?>/jquery.min.js"></script>
-    <script src="<?=ADMIN_CSS_URL?>/js/bootstrap.js"></script>
-    <script type="text/javascript" src="<?=JS_URL?>/tinymce/tinymce.min.js"></script>
-    <script src="<?=ADMIN_CSS_URL?>/js/tiny-scrollbar.js"></script>
+    <script type="text/javascript" src="<?=JS_URL?>jquery.min.js"></script>
+    <script src="<?=ADMIN_CSS_URL?>js/bootstrap.js"></script>
+    <script type="text/javascript" src="<?=JS_URL?>tinymce/tinymce.min.js"></script>
+    <script src="<?=ADMIN_CSS_URL?>js/tiny-scrollbar.js"></script>
+    <?php if (current_file() == 'profile.php' || current_file() == 'edit_post.php' || current_file() == 'add_post.php'): ?>
+        <script type="text/javascript" src="<?=JS_URL?>jquery.form.js"></script>
+    <?php endif ?>
     <?php if (current_file() == 'profile.php'): ?>
-    <script type="text/javascript" src="<?=JS_URL?>/jquery.form.js"></script>
-    <script type="text/javascript" src="<?=JS_URL?>/edit-profile.js"></script>
+    <script type="text/javascript" src="<?=JS_URL?>edit-profile.js"></script>
+    <?php endif ?>
+    <?php if (current_file() == 'edit_post.php' || current_file() == 'add_post.php'): ?>
+    <script type="text/javascript" src="<?=JS_URL?>post_thumbnail.js"></script>
     <?php endif ?>
 
     <?php $arr = array('view_categories.php', 'view_posts.php', 'manage_users.php', 'trash.php');
     if(in_array(current_file(), $arr)) { ?>
-    <script src="<?=ADMIN_CSS_URL?>/js/jquery.dataTables.js"></script>
+    <script src="<?=ADMIN_CSS_URL?>js/jquery.dataTables.js"></script>
     <?php } ?>
 
     <?php if (current_file() == 'profile.php'): ?>
-    <script src="<?=ADMIN_CSS_URL?>/js/bootstrap-editable.min.js"></script>
+    <script src="<?=ADMIN_CSS_URL?>js/bootstrap-editable.min.js"></script>
     <?php endif ?>
 
     <?php $arr = array('view_categories.php', 'view_posts.php', 'manage_users.php', 'trash.php');
@@ -68,23 +73,10 @@ session_start();
     $(document).ready(function() {
         //TinyMCE
         tinymce.init({
-            selector: "textarea",
             theme : 'modern',
             skin : 'lightgray',
-        });
-
-        //ScrollUp
-        $(function () {
-            $.scrollUp({
-                scrollName: 'scrollUp', // Element ID
-                topDistance: '300', // Distance from top before showing element (px)
-                topSpeed: 300, // Speed back to top (ms)
-                animation: 'fade', // Fade, slide, none
-                animationInSpeed: 400, // Animation in speed (ms)
-                animationOutSpeed: 400, // Animation out speed (ms)
-                scrollText: 'Scroll to top', // Text for element
-                activeOverlay: false, // Set CSS color to display scrollUp active point, e.g '#00FFFF'
-            });
+            mode : "specific_textareas",
+            editor_selector : "mceEditor"
         });
 
         //Tooltip
@@ -102,7 +94,7 @@ session_start();
 
 <body>
     <header>
-        <a href="<?=BASE_URL?>/index.php" class="logo"><img src="<?=ADMIN_CSS_URL?>/img/logo.png" alt="logo" /></a>
+        <a href="<?=BASE_URL?>index.php" class="logo"><img src="<?=ADMIN_CSS_URL?>img/logo.png" alt="logo" /></a>
         <div class="btn-group">
             <?php if (isset($_SESSION['uname'])) { ?>
             <button class="btn btn-primary"><?php echo $_SESSION['uname']; ?></button>
@@ -110,13 +102,13 @@ session_start();
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu pull-right">
-                <li><a href="<?=BASE_URL?>/users/profile.php">Hồ sơ</a></li>
-                <li><a href="<?=BASE_URL?>/users/account_settings.php">Cài đặt tài khoản</a></li>
-                <li><a href="<?=BASE_URL?>/users/logout.php">Đăng xuất</a></li>
+                <li><a href="<?=BASE_URL?>users/profile.php">Hồ sơ</a></li>
+                <li><a href="<?=BASE_URL?>users/account_settings.php">Cài đặt tài khoản</a></li>
+                <li><a href="<?=BASE_URL?>users/logout.php">Đăng xuất</a></li>
             </ul>
             <?php } else { ?>
-            <a class="btn btn-primary" data-original-title="" href="<?=BASE_URL?>/users/login.php">Đăng nhập</a>
-            <a class="btn" data-original-title="" href="<?=BASE_URL?>/users/register.php">Đăng ký</a>
+            <a class="btn btn-primary" data-original-title="" href="<?=BASE_URL?>users/login.php">Đăng nhập</a>
+            <a class="btn" data-original-title="" href="<?=BASE_URL?>users/register.php">Đăng ký</a>
             <?php } ?>
         </div>
     </header>

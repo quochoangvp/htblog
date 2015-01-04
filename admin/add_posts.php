@@ -40,10 +40,16 @@
         } else {
             $errors[] = 'status';
         }
+        // Validate description
+        if (!empty($clean['post_des'])) {
+            $post_des = mysqli_real_escape_string($con,$clean['post_des']);
+        } else {
+            $errors[] = 'post_des';
+        }
 
         // Insert to database
         if (empty($errors)) {
-            if (insert_data('posts', '(post_name, user_id, cat_id, content, status, time)', "('{$post_name}', ".$_SESSION['uid'].", $cat_id, '$content', '$status', NOW())")) {
+            if (insert_data('posts', '(post_name, user_id, cat_id, content, post_des, status, time)', "('{$post_name}', ".$_SESSION['uid'].", $cat_id, '$content', '$post_des', '$status', NOW())")) {
                 $messages = '<p class="success">Đăng bài thành công!</p>';
             } else {
                 $messages = '<p class="warning">Không thể đăng bài!</p>';
@@ -67,7 +73,7 @@
                     </div>
                     <div class="widget-body">
                         <div>
-                            <textarea name="content" cols="50" rows="20"><?php
+                            <textarea class="mceEditor" name="content" cols="50" rows="20"><?php
                                 if(isset($_POST['content'])) echo htmlentities($_POST['content'], ENT_COMPAT, 'UTF-8');
                             ?></textarea>
                         </div>
@@ -91,7 +97,6 @@
                 }
             ?>
         </div>
-        <hr class="hr-stylish-1"/>
         <div class="wrapper">
             <label for="cat_id" class="center">Chọn thể loại</label>
             <select name="cat_id" class="input-block-level" tabindex="2">
@@ -106,7 +111,15 @@
                 }
             ?>
         </div>
-        <hr class="hr-stylish-1"/>
+        <div class="wrapper">
+            <label for="post_des" class="center">Mô tả (&lt;170 kí tự)</label>
+            <textarea name="post_des" id="post_des" class="input-block-level" rows="5" tabindex="3"><?=isset($clean['post_des']) ? $clean['post_des'] : '';?></textarea>
+            <?php
+                if(isset($errors) && in_array('post_des', $errors)) {
+                    echo "<p class='warning'>Vui lòng nhập mô tả cho bài viết</p>";
+                }
+            ?>
+        </div>
         <div class="wrapper">
             <label for="post" class="center">Chọn trạng thái</label>
             <div class="radio">

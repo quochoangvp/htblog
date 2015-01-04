@@ -54,7 +54,7 @@
                                         <td class="center"><?=$posts[$i]['time']?></td>
                                         <td class="center"><?=$posts[$i]['username']?></td>
                                         <td><?=the_excerpt($posts[$i]['content'])?></td>
-                                        <td><a href="<?=BASE_URL?>/category.php?cid=<?=$posts[$i]['cat_id']?>"><?=$posts[$i]['cat_name']?></a></td>
+                                        <td><a href="<?=BASE_URL?>category.php?cid=<?=$posts[$i]['cat_id']?>"><?=$posts[$i]['cat_name']?></a></td>
                                         <td class="center"><?php
                                             if($posts[$i]['status'] == 'publish') echo '<span class="label label label-success">Công khai</span>';
                                             if($posts[$i]['status'] == 'draft') echo '<span class="label label label-warning">Bản nháp</span>';

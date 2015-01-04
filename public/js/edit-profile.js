@@ -1,6 +1,6 @@
 $(document).ready(function() { 
 
-	$('#photoimg').live('change', function()			{ 
+	$('#photoimg').live('change', function() { 
 		$("#preview").html('');
 		$("#preview").html('<img src="../public/images/loader.gif" alt="Uploading...."/>');
 		$("#imageform").ajaxForm({

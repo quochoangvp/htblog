@@ -1,12 +1,12 @@
 <?php
-
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 define('ROOT_DIR', dirname(dirname(__FILE__)));
 
-define('BASE_URL', 'http://localhost/htblog');
-define('ADMIN_URL', BASE_URL. '/admin');
-define('CSS_URL', BASE_URL. '/public/css/default');
-define('ADMIN_CSS_URL', BASE_URL. '/public/css/admin');
-define('JS_URL', BASE_URL. '/public/js');
+define('BASE_URL', 'http://localhost/htblog/');
+define('ADMIN_URL', BASE_URL. 'admin/');
+define('CSS_URL', BASE_URL. 'public/css/default/');
+define('ADMIN_CSS_URL', BASE_URL. 'public/css/admin/');
+define('JS_URL', BASE_URL. 'public/js/');
 
 $con = mysqli_connect("localhost","root","","db_htblog");
 
@@ -16,6 +16,16 @@ if (mysqli_connect_errno()) {
 }
 // Change character set to utf8
 mysqli_set_charset($con,"utf8");
+
+function chmod_r($path, $fp = '0777') {
+    $dir = new DirectoryIterator($path);
+    foreach ($dir as $item) {
+        chmod($item->getPathname(), $fp);
+        if ($item->isDir() && !$item->isDot()) {
+            chmod_r($item->getPathname());
+        }
+    }
+}
 
 /**
  * Đưa ra lỗi khi chạy câu lệnh truy vấn CSDL không thành công
@@ -34,7 +44,7 @@ function confirm_query($result, $query) {
  * @param  string $page đường dẫn
  */
 function redirect_to($page = 'index.php') {
-    $page = BASE_URL.'/'.$page;
+    $page = BASE_URL.$page;
     header("Location: $page");
     exit();
 }
@@ -44,6 +54,12 @@ function redirect_to($page = 'index.php') {
  */
 function admin_access() {
     if (!(isset($_SESSION['ulevel']) && ($_SESSION['ulevel'] == 'owner' || $_SESSION['ulevel'] == 'admin'))) {
+        redirect_to();
+    }
+}
+
+function is_logged() {
+    if (empty($_SESSION['uid'])) {
         redirect_to();
     }
 }
@@ -79,7 +95,9 @@ function get_footer() {
  * @return string Tên file
  */
 function current_file() {
-    return basename($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $path = basename($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $filename = explode('?', $path);
+    return $filename[0];
 }
 
 /**
@@ -152,9 +170,9 @@ function check_data_exist($column, $table, $where) {
  * @param  string $values Dữ liệu cần chèn
  * @return boolean         Trả về đúng hoặc sai
  */
-function insert_data($table, $keys, $values, $where=1) {
+function insert_data($table, $keys, $values) {
     global $con;
-    $q = "INSERT INTO $table $keys VALUES $values WHERE $where";
+    $q = "INSERT INTO $table $keys VALUES $values";
     $r = mysqli_query($con,$q);
     confirm_query($r,$q);
     if (mysqli_affected_rows($con) > 0) {
@@ -277,7 +295,7 @@ function view_cat_list() {
         while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
             $output .= '<tr class="gradeA">';
             $output .= '<td>'.$row['cat_id'].'</td>
-                        <td><a href="'.BASE_URL.'/category.php?cid='.$row['cat_id'].'">'.$row['cat_name'].'</a></td>
+                        <td><a href="'.BASE_URL.'category.php?cid='.$row['cat_id'].'">'.$row['cat_name'].'</a></td>
                         <td>';
                             $parent = select_data("SELECT cat_name FROM categories WHERE cat_id = ".$row['parent_id']);
                             if (!empty($parent[0]['cat_name'])) {
@@ -298,8 +316,8 @@ function view_cat_list() {
                                     Tác động<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="'.ADMIN_URL.'/edit_category.php?cid='.$row['cat_id'].'" data-original-title="">Sửa</a></li>
-                                    <li><a href="'.ADMIN_URL.'/delete_category.php?cid='.$row['cat_id'].'" data-original-title="">Xóa</a></li>
+                                    <li><a href="'.ADMIN_URL.'edit_category.php?cid='.$row['cat_id'].'" data-original-title="">Sửa</a></li>
+                                    <li><a href="'.ADMIN_URL.'delete_category.php?cid='.$row['cat_id'].'" data-original-title="">Xóa</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -334,7 +352,7 @@ function sidebar_cat_list($category=0,$level=0) {
         $level++;
         $output = '<ul>';
         while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
-            $output .= '<li><a href="' . BASE_URL . '/category.php?cid=' . $row['cat_id'] . '"><span class="label-bullet-blue"></span>' . $row['cat_name'] . '</a>';
+            $output .= '<li><a href="' . BASE_URL . 'category.php?cid=' . $row['cat_id'] . '"><span class="label-bullet-blue"></span>' . $row['cat_name'] . '</a>';
             if (mysqli_num_rows($r) > 0) {
                 $output .= sidebar_cat_list($row['cat_id'],$level);
             }
@@ -356,7 +374,7 @@ function nav_cat_list($category=0,$level=0,$class='nav_cat_list') {
         $level++;
         $output = '<ul class="'.$class.'">';
         while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
-            $output .= '<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="' . BASE_URL . '/category.php?cid=' . $row['cat_id'] . '"><span class="label-bullet-blue"></span>' . $row['cat_name'] . '</a>';
+            $output .= '<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="'.BASE_URL.'category.php?cid='.$row['cat_id'].'"><span class="label-bullet-blue"></span>'.$row['cat_name'].'</a>';
             if (mysqli_num_rows($r) > 0) {
                 $output .= nav_cat_list($row['cat_id'],$level, 'dropdown-menu');
             }
@@ -377,7 +395,7 @@ function sidebar_recent_posts() {
     if(mysqli_num_rows($r) > 0) {
         $output = '<ul>';
         while ($row = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
-            $output .= '<li><a href="' . BASE_URL . '/single.php?pid=' . $row['post_id'] . '"><span class="label-bullet-blue"></span>' . $row['post_name'] . '</a>';
+            $output .= '<li><a href="'.BASE_URL.'single.php?pid='.$row['post_id'].'"><span class="label-bullet-blue"></span>'.$row['post_name'].'</a>';
         }
         $output .= '</ul>';
     } else {
@@ -467,7 +485,7 @@ function breadcrumb($cid) {
         echo "
             <li itemscope itemtype=\"http://data-vocabulary.org/Breadcrumb\">
                 <span itemprop=\"title\">
-                    <a href=\"".BASE_URL."/category.php?cid=".$id."\" itemprop=\"url\">".$name."</a>
+                    <a href=\"".BASE_URL."category.php?cid=".$id."\" itemprop=\"url\">".$name."</a>
                 </span>
             </li>
         ";
@@ -506,7 +524,7 @@ function same_cat_posts($cid, $pid) {
                     <div class="stylish-lists">
                         <ul>';
     for ($i=0; $i < sizeof($posts); $i++) {
-        echo '<li><a href="'.BASE_URL.'/single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></li>';
+        echo '<li><a href="'.BASE_URL.'single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></li>';
     }
     echo '
                         </ul>
@@ -528,7 +546,7 @@ function related_posts($cid, $pid) {
                     <div class="stylish-lists">
                         <ul>';
     for ($i=0; $i < sizeof($posts); $i++) {
-        echo '<li><a href="'.BASE_URL.'/single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></li>';
+        echo '<li><a href="'.BASE_URL.'single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></li>';
     }
     echo '
                         </ul>
