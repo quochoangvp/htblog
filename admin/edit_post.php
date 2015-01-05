@@ -48,8 +48,6 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
         // Validate post thumbnail
         if (!empty($clean['post_thumbnail'])) {
             $post_thumbnail = mysqli_real_escape_string($con,$clean['post_thumbnail']);
-        } else {
-            $post_thumbnail = '';
         }
 
         // Cập nhật CSDL
@@ -78,12 +76,21 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             <div class="span12">
                 <div class="widget">
                     <div class="widget-header">
-                        <div class="title">Chỉnh sửa: <?=$posts[0]['post_name']; ?><span class="mini-title"><?php if(isset($errors) && in_array('content', $errors)) { echo "<p class='warning'>Vui lòng nhập nội dung</p>"; } ?></span></div>
+                        <div class="title" id="<?=$post_id?>">Chỉnh sửa: <?=$posts[0]['post_name']; ?><span class="mini-title"><?php if(isset($errors) && in_array('content', $errors)) { echo "<p class='warning'>Vui lòng nhập nội dung</p>"; } ?></span></div>
                         <span class="tools">
                             <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                         </span>
                     </div>
                     <div class="widget-body">
+                        <?php if(!empty($messages)) echo '<div class="wrapper">'.$messages.'</div>'; ?>
+                        <div class="wrapper">
+                            <input form="add_post" type="text" name="post_name" id="post_name" class="input-block-level" value="<?=$posts[0]['post_name']; ?>" maxlength="255" tabindex="1" />
+                            <?php
+                                if(isset($errors) && in_array('post_name', $errors)) {
+                                    echo "<p class='warning'>Vui lòng nhập tên bài viết</p>";
+                                }
+                            ?>
+                        </div>
                         <div>
                             <textarea form="add_post" class="mceEditor" name="content" cols="50" rows="20"><?=$posts[0]['content']; ?></textarea>
                         </div>
@@ -100,16 +107,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
         </div>
     </div><!--.left-sidebar-->
     <div class="right-sidebar">
-        <?php if(!empty($messages)) echo '<div class="wrapper">'.$messages.'</div><hr class="hr-stylish-1"/>'; ?>
-        <div class="wrapper">
-            <label for="post" class="center">Tên bài viết</label>
-            <input form="add_post" type="text" name="post_name" id="post_name" class="input-block-level" value="<?=$posts[0]['post_name']; ?>" maxlength="255" tabindex="1" />
-            <?php
-                if(isset($errors) && in_array('post_name', $errors)) {
-                    echo "<p class='warning'>Vui lòng nhập tên bài viết</p>";
-                }
-            ?>
-        </div>
+        
         <div class="wrapper">
             <label for="cat_id" class="center">Tất cả thể loại</label>
             <select form="add_post" name="cat_id" class="input-block-level" tabindex="2">
@@ -128,7 +126,9 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             <label for="post_des" class="center">Mô tả (&lt;170 kí tự)</label>
             <textarea form="add_post" name="post_des" id="post_des" class="input-block-level" rows="5" tabindex="3"><?php
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    echo $clean['post_des'];
+                    if (!empty($clean['post_des'])) {
+                        echo $clean['post_des'];
+                    }
                 } else {
                     if (!empty($posts[0]['post_des'])) {
                         echo $posts[0]['post_des'];
@@ -142,6 +142,20 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                     echo "<p class='warning'>Vui lòng nhập mô tả cho bài viết</p>";
                 }
             ?>
+        </div>
+        <div class="wrapper">
+            <label for="post_tags" class="center">Gắn thẻ</label>
+            <div class="ui-widget">
+                <input type="text" name="tag_name" id="tags" class="input-block-level" value="" maxlength="255"/>
+            </div>
+            <?php $tags = select_data("SELECT t.tag_name FROM tags AS t INNER JOIN tags_posts as tp USING(tag_id)"); ?>
+            <div id="results"<?php if(empty($tags)) echo 'style="display:none;"' ?>>
+                <?php
+                    for ($i=0; $i < sizeof($tags); $i++) {
+                        echo '<a href="#" class="tags_val">'.$tags[$i]['tag_name'].'</a>';
+                    }
+                ?>
+            </div>
         </div>
         <div class="wrapper">
             <label for="status" class="center">Trạng thái</label>
@@ -173,14 +187,35 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             <label for="status" class="center">Hình ảnh bài viết</label>
             <div class="post-thumbnail">
                 <div id="preview">
-                    <img src="<?php
+                    <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            ?><?=BASE_URL?>public/images/uploads/<?=empty($clean['post_thumbnail']) ? 'no_thumb.jpg' : 'posts/'.$clean['post_thumbnail'];?>" alt="user photo" /><?php
+                            echo '<img src="'.BASE_URL.'public/images/uploads/';
+                            if(empty($clean['post_thumbnail'])) echo 'no_thumb.jpg';
+                            else echo 'posts/'.$clean['post_thumbnail'];
+                            echo '" alt="user photo" />';
+
+                            echo '<label id="lbl_post_thumb" for="';
+                            if(!empty($clean['post_thumbnail'])) echo $clean['post_thumbnail'];
+                            echo '">';
+                            echo '<input form="add_post" type="hidden" id="input_post_thumbnail" name="post_thumbnail" value="';
+                            if(!empty($clean['post_thumbnail'])) echo $clean['post_thumbnail'];
+                            echo '" />';
+                            echo '</label>';
                         } else {
-                            ?><?=BASE_URL?>public/images/uploads/<?=empty($posts[0]['thumbnail']) ? 'no_thumb.jpg' : 'posts/'.$posts[0]['thumbnail'];?>" alt="user photo" /><?php } ?>
-                    <label id="lbl_post_thumb" for="<?=empty($posts[0]['thumbnail']) ? '' : $posts[0]['thumbnail'];?>">
-                        <input form="add_post" type="hidden" id="input_post_thumbnail" name="post_thumbnail" value="<?=empty($posts[0]['thumbnail']) ? '' : 'posts/'.$posts[0]['thumbnail'];?>" />
-                    </label>
+                            echo '<img src="'.BASE_URL.'public/images/uploads/';
+                            if(empty($posts[0]['thumbnail'])) echo 'no_thumb.jpg';
+                            else echo 'posts/'.$posts[0]['thumbnail'];
+                            echo '" alt="user photo" />';
+                            
+                            echo '<label id="lbl_post_thumb" for="';
+                            if(!empty($posts[0]['thumbnail'])) echo $posts[0]['thumbnail'];
+                            echo '">';
+                            echo '<input form="add_post" type="hidden" id="input_post_thumbnail" name="post_thumbnail" value="';
+                            if(!empty($posts[0]['thumbnail'])) echo $posts[0]['thumbnail'];
+                            echo '" />';
+                            echo '</label>';
+                        }
+                    ?>
                 </div>
                 <div title="Nhấn vào ảnh để thay ảnh" class="photoimg">
                     <form id="imageform" method="post" enctype="multipart/form-data" action="ajaxthumb.php">

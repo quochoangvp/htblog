@@ -1,21 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<style type="text/css">
-		.clearfix:after, .clearfix:before {content: ""; display: block;}
-		.clearfix:after {clear: both;}
-		.container {background: #ccc;}
-		.box {height: 100px;width: 100px;background: #222;}
-		.left {float: left;height: 300px;}
-		.right {float: right;}
-	</style>
+  <meta charset="utf-8">
+  <title>jQuery UI Autocomplete - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <script src="public/js/jquery.min.js"></script>
+  <script src="public/js/jquery-ui.min.js"></script>
+  <script>
+  $(function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    alert(availableTags);
+    $( "#tags" ).autocomplete({
+      source: availableTags
+    });
+
+    $("#tags").live('keypress', function(event) {
+    	var p = event.which;
+    	if (p==13) {
+    		var tag = $("#tags").val();
+    		$("#results").append(tag);
+    		$("#results").append(', ');
+    		$("#tags").val("");
+    	};
+    });
+
+});
+  </script>
 </head>
 <body>
-	<div class="container clearfix">
-		<div class="box left"></div>
-		<div class="box right"></div>
-	</div>
+ 
+<div class="ui-widget">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+<div id="results"></div>
 </body>
 </html>

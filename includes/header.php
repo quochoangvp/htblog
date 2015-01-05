@@ -24,6 +24,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="<?=ADMIN_CSS_URL?>icomoon/style.css" rel="stylesheet">
+    <link href="<?=ADMIN_CSS_URL?>css/jquery-ui.css" rel="stylesheet">
     <!--[if lte IE 7]>
     <script src="<?=ADMIN_CSS_URL?>css/icomoon-font/lte-ie7.js">
     </script>
@@ -35,11 +36,13 @@ session_start();
     <?php endif ?>
 
     <script type="text/javascript" src="<?=JS_URL?>jquery.min.js"></script>
+    <script type="text/javascript" src="<?=JS_URL?>jquery-ui.min.js"></script>
     <script src="<?=ADMIN_CSS_URL?>js/bootstrap.js"></script>
     <script type="text/javascript" src="<?=JS_URL?>tinymce/tinymce.min.js"></script>
     <script src="<?=ADMIN_CSS_URL?>js/tiny-scrollbar.js"></script>
     <?php if (current_file() == 'profile.php' || current_file() == 'edit_post.php' || current_file() == 'add_post.php'): ?>
         <script type="text/javascript" src="<?=JS_URL?>jquery.form.js"></script>
+        <script type="text/javascript" src="<?=JS_URL?>js-tags.js"></script>
     <?php endif ?>
     <?php if (current_file() == 'profile.php'): ?>
     <script type="text/javascript" src="<?=JS_URL?>edit-profile.js"></script>
