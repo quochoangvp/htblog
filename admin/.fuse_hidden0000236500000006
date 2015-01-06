@@ -47,6 +47,33 @@
             $errors[] = 'post_des';
         }
 
+        // Validate tags
+        if (!empty($clean['tag_name'])) {
+            $tag_name = mysqli_real_escape_string($con,$clean['tag_name']);
+            $tag_name = rtrim($tag_name,',');
+            $tags = explode(',', $tag_name);
+
+            for ($i=0; $i < sizeof($tags); $i++) { 
+                if(!check_data_exist('tag_name', 'tags', "tag_name='".$tags[$i]."'")) {
+                    if (insert_data('tags',"(`tag_name`)", "('".$tags[$i]."')")) {
+                        // Thanh cong
+                    } else {
+                        // That bai
+                    }
+                }
+                $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tags[$i]."' LIMIT 1");
+                $tag_id = $tag_id[0]['tag_id'];
+                if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = {$post_id}")) {
+                    if (insert_data('tags_posts',"(`tag_id`, `post_id`)", "($tag_id, $post_id)")) {
+                        // Thanh cong
+                    } else {
+                        // That bai
+                    }
+                } else {
+                    // Thanh cong
+                }
+            }
+        }
         // Validate post thumbnail
         if (!empty($clean['post_thumbnail'])) {
             $post_thumbnail = mysqli_real_escape_string($con,$clean['post_thumbnail']);
@@ -57,33 +84,6 @@
             $now = date("Y-m-d H:i:s");
             if (insert_data('posts', '(post_name, user_id, cat_id, content, post_des, status, thumbnail, time)', "('{$post_name}', ".$_SESSION['uid'].", $cat_id, '$content', '$post_des', '$status', '$post_thumbnail', '$now')")) {
                 $posts = select_data("SELECT post_id FROM posts WHERE time = '{$now}'");
-                // Validate tags
-                if (!empty($clean['tag_name'])) {
-                    $tag_name = mysqli_real_escape_string($con,$clean['tag_name']);
-                    $tag_name = rtrim($tag_name,',');
-                    $tags = explode(',', $tag_name);
-
-                    for ($i=0; $i < sizeof($tags); $i++) { 
-                        if(!check_data_exist('tag_name', 'tags', "tag_name='".$tags[$i]."'")) {
-                            if (insert_data('tags',"(`tag_name`)", "('".$tags[$i]."')")) {
-                                // Thanh cong
-                            } else {
-                                // That bai
-                            }
-                        }
-                        $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tags[$i]."' LIMIT 1");
-                        $tag_id = $tag_id[0]['tag_id'];
-                        if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = ".$posts[0]['post_id'])) {
-                            if (insert_data('tags_posts',"(`tag_id`, `post_id`)", "($tag_id, ".$posts[0]['post_id'].")")) {
-                                // Thanh cong
-                            } else {
-                                // That bai
-                            }
-                        } else {
-                            // Thanh cong
-                        }
-                    }
-                }
                 if (!empty($posts)) redirect_to('admin/edit_post.php?pid='.$posts[0]['post_id']);
                 $messages = '<p class="success">Đăng bài thành công!</p>';
             } else {

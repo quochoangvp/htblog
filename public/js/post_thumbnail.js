@@ -31,4 +31,20 @@ $(document).ready(function() {
 		};
 		event.preventDefault();
 	});
+
+	// Label title
+	var postName = $("#post_name").val();
+	if (postName=='') $("label.text").show();
+	else $("label.text").hide();
+	$("#post_name").focusin(function(event) {
+		$("label.text").hide();
+	});
+	$("#post_name").focusout(function(event) {
+		var postName = $("#post_name").val();
+		if (postName=='') {
+			$("label.text").show();
+		} else{
+			$("label.text").hide();
+		};
+	});
 });

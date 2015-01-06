@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     	}
     } else {
     	$response['status'] = 'success';
-		$response['msg']  = 'Xóa thẻ khỏi bài viết thành công!';
+		$response['msg']  = 'Xóa thẻ thành công!';
     }
     
 	echo json_encode($response);

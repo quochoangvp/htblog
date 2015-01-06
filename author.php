@@ -31,6 +31,7 @@
 						<?php
 						if ($posts) {
 							for ($i=0; $i<sizeof($posts); $i++) {
+                                $tags = select_data("SELECT t.tag_name FROM tags AS t INNER JOIN tags_posts as tp USING(tag_id) WHERE tp.post_id = {$posts[$i]['post_id']}");
 								echo '<div class="post">
                                         <div class="img-container"><img src="'.BASE_URL.'public/images/uploads/';
                                         if(empty($posts[$i]['thumbnail'])) {
@@ -43,11 +44,20 @@
                                             <h5 class="no-margin"><a href="single.php?pid='.$posts[$i]['post_id'].'">'.$posts[$i]['post_name'].'</a></h5>
                                             <p class="no-margin">'.the_excerpt($posts[$i]['content'],420).' <a href="single.php?pid='.$posts[$i]['post_id'].'">Xem thêm</a></p>
                                         </article>
+                                        <div class="post-tags">';
+
+                                        if (!empty($tags)) {
+                                            foreach ($tags as $tag) {
+                                                echo '<span class="fs1" aria-hidden="true" data-icon=""></span><a href="'.BASE_URL.'tag.php?tn='.$tag['tag_name'].'">'.$tag['tag_name'].'<a/>';
+                                            }
+                                        }
+
+                                        echo '</div>
                                         <div class="icons-nav">
                                             <ul>
                                                 <ul>
-                                                <li><strong>Ngày đăng: </strong> '.$posts[$i]['post_time'].' </li>
-                                                <li><strong>Lượt xem: </strong> '.getPostView($posts[$i]['post_id']).'</li>
+                                                <li><span class="fs1" aria-hidden="true" data-icon=""></span>'.$posts[$i]['post_time'].' </li>
+                                                <li><span class="fs1" aria-hidden="true" data-icon=""></span>'.getPostView($posts[$i]['post_id']).'</li>
                                             </ul>
                                         </div>
                                     </div>';

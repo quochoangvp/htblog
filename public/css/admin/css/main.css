@@ -7440,16 +7440,16 @@ span.success {color: green;}
 .radio label {margin-left: 20px;}
 ul.post_statics {
   list-style: none;
-  padding: 10px 0px 7px 0px;
+  padding: 5px 0px;
   border-bottom: 1px solid #CCCCCC;
   border-left: 1px solid #ccc;
-  width: 29%;
-  height: 23px;
+  width: 23%;
+  height: 20px;
   float: right; }
   ul.post_statics li{
     float: right; }
     ul.post_statics li span {
-      margin: 0px 4px 0px 20px; }
+      margin: 0px 3px 0px 10px; }
 
 div.thumbnail {
   position: relative;
@@ -7574,17 +7574,26 @@ div#message-ajax p {
     text-align: justify; }
 .dashboard-wrapper .left-sidebar .widget .widget-body .post-container article a {
     color: #ed6d49; }
-.dashboard-wrapper .left-sidebar .widget .widget-body .post-container .icons-nav {
-    width: 85%;
+.post-tags {
     position: absolute;
-    left: 13%;
-    top: 110px; }
+    top: 114px;
+    left: 25px; }
+.post-tags [data-icon]:before {
+  font-size: 8px;
+  margin: 0px 3px 0px 10px;
+  line-height: 24px;
+  color: #ed6d49;
+}
+.dashboard-wrapper .left-sidebar .widget .widget-body .post-container .post-tags {left: 10px;}
+.dashboard-wrapper .left-sidebar .widget .widget-body .post-container .icons-nav {
+    position: absolute;
+    top: 110px;
+    right: 20px; }
 .dashboard-wrapper .left-sidebar .widget .widget-body .post-container .icons-nav ul li {
     float: right;
-    display: inline-block;
-    margin-left: 20px; }
+    display: inline-block; }
 .dashboard-wrapper .left-sidebar .widget .widget-body .post-container .icons-nav ul li [data-icon]:before {
-    margin: 0 4px;
+    margin: 0px 3px 0px 10px;
     line-height: 24px;
     font-size: 12px;
     color: #ed6d49; }
@@ -7599,9 +7608,17 @@ div#results {
   word-wrap: break-word; }
 form#add_tags {margin-bottom: 0;}
 a.tags_val {
-  margin: 0px 3px; }
-a.tags_val:after {
-  content: "x";
-  font-size: 9px;
-  color: red;
-  vertical-align: top; }
+  margin: 2px 3px;
+  padding: 1px 3px;
+  background: #F00;
+  color: #fff; }
+label.text {
+  position: absolute;
+  top: 81px;
+  left: 39px;
+  cursor: text; }
+
+ul.post_statics [data-icon]:before {
+  font-size: 10px;
+  color: #ed6d49;
+}

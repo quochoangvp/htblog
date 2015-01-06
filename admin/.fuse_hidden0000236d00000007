@@ -73,7 +73,7 @@
                         }
                         $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tags[$i]."' LIMIT 1");
                         $tag_id = $tag_id[0]['tag_id'];
-                        if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = ".$posts[0]['post_id'])) {
+                        if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = {".$posts[0]['post_id']."}")) {
                             if (insert_data('tags_posts',"(`tag_id`, `post_id`)", "($tag_id, ".$posts[0]['post_id'].")")) {
                                 // Thanh cong
                             } else {

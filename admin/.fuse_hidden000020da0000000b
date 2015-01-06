@@ -48,29 +48,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
         // Validate tags
         if (!empty($clean['tag_name'])) {
             $tag_name = mysqli_real_escape_string($con,$clean['tag_name']);
-            $tag_name = rtrim($tag_name,',');
-            $tags = explode(',', $tag_name);
-
-            for ($i=0; $i < sizeof($tags); $i++) { 
-                if(!check_data_exist('tag_name', 'tags', "tag_name='".$tags[$i]."'")) {
-                    if (insert_data('tags',"(`tag_name`)", "('".$tags[$i]."')")) {
-                        // Thanh cong
-                    } else {
-                        // That bai
-                    }
-                }
-                $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tags[$i]."' LIMIT 1");
-                $tag_id = $tag_id[0]['tag_id'];
-                if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = {$post_id}")) {
-                    if (insert_data('tags_posts',"(`tag_id`, `post_id`)", "($tag_id, $post_id)")) {
-                        // Thanh cong
-                    } else {
-                        // That bai
-                    }
-                } else {
-                    // Thanh cong
-                }
-            }
+            
         }
         // Validate post thumbnail
         if (!empty($clean['post_thumbnail'])) {
@@ -111,7 +89,6 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                     <div class="widget-body">
                         <?php if(!empty($messages)) echo '<div class="wrapper">'.$messages.'</div>'; ?>
                         <div class="wrapper">
-                            <label for="post" class="text">Nhập tên bài viết ở đây</label>
                             <input form="add_post" type="text" name="post_name" id="post_name" class="input-block-level" value="<?=$posts[0]['post_name']; ?>" maxlength="255" tabindex="1" />
                             <?php
                                 if(isset($errors) && in_array('post_name', $errors)) {

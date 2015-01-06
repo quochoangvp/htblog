@@ -33,15 +33,7 @@
                 </div>
                 <div class="widget-body">
                 	<ul class="breadcrumb-beauty"><?=breadcrumb($post[0]['cat_id'])?><li><a href=""><?=$post[0]['post_name']?></a></li></ul>
-                	<div class="post-tags">
-                	<?php $tags = select_data("SELECT t.tag_name FROM tags AS t INNER JOIN tags_posts as tp USING(tag_id) WHERE tp.post_id = {$pid}");
-                	if (!empty($tags)) {
-                        foreach ($tags as $tag) {
-                            echo '<span class="fs1" aria-hidden="true" data-icon=""></span><a href="'.BASE_URL.'tag.php?tn='.$tag['tag_name'].'">'.$tag['tag_name'].'<a/>';
-                        }
-                    }
-                	?>
-                	</div>
+                	<?php $tags = select_data("SELECT t.tag_name FROM tags AS t INNER JOIN tags_posts as tp USING(tag_id) WHERE tp.post_id = {$posts[0]['post_id']}"); ?>
 	                <ul class="post_statics">
 	                	<li><span class="fs1" aria-hidden="true" data-icon=""></span><a href='author.php?aid=<?=$post[0]['user_id']?>'><?=$post[0]['username']?></a></li>
 	                	<li><span class="fs1" aria-hidden="true" data-icon=""></span><?=$post[0]['post_time']?></li>

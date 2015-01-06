@@ -72,7 +72,7 @@ get_nav();
 					<div class="widget-body">
 						<div class="post-container">
 						<?php
-						$posts = select_data("SELECT p.post_id, p.post_name, p.thumbnail, p.content, date_format(p.time, '%b %d, %y') AS post_time, u.username, u.user_id, v.value AS post_view FROM posts AS p INNER JOIN users AS u USING(user_id) INNER JOIN visitors AS v USING(post_id) WHERE p.status = 'publish' ORDER BY post_view DESC LIMIT 0,3");
+						$posts = select_data("SELECT p.post_id, p.post_name, p.thumbnail, p.content, date_format(p.time, '%b %d, %y') AS post_time, u.username, u.user_id FROM posts AS p INNER JOIN users AS u USING(user_id) WHERE p.status = 'publish' ORDER BY post_time DESC LIMIT 0,3");
                         if ($posts) {
                             for ($i=0; $i<sizeof($posts); $i++) {
                             	$tags = select_data("SELECT t.tag_name FROM tags AS t INNER JOIN tags_posts as tp USING(tag_id) WHERE tp.post_id = {$posts[$i]['post_id']}");
