@@ -19,7 +19,6 @@
                 <div class="widget-body">
                     <?php
                         $users = select_data("SELECT user_id, username, email, level, DATE_FORMAT(reg_time, '%b %d %Y') AS time FROM users ORDER BY user_id ASC");
-                        $size = sizeof($users);
                         if ($users) {
                     ?>
                     <div id="dt_example" class="example_alt_pagination">
@@ -37,21 +36,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php for ($i=0; $i < $size; $i++) { ?>
+                                    <?php foreach ($users as $user) { ?>
                                     <tr>
                                         <td><input type="checkbox" class="no-margin"></td>
-                                        <td><?=$users[$i]['user_id']?></td>
-                                        <td><span class="name"><?=$users[$i]['username']?></span></td>
-                                        <td><?=$users[$i]['email']?></td>
-                                        <td><span class="label label label-info"><?=$users[$i]['level']?></span></td>
-                                        <td><?=$users[$i]['time']?></td>
+                                        <td><?=$user['user_id']?></td>
+                                        <td><span class="name"><?=$user['username']?></span></td>
+                                        <td><?=$user['email']?></td>
+                                        <td><span class="label label label-info"><?=$user['level']?></span></td>
+                                        <td><?=$user['time']?></td>
                                         <td>
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">Tác động<span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="edit_user.php?uid=<?=$users[$i]['user_id']?>" data-original-title="">Sửa</a></li>
-                                                    <li><a href="delete_user.php?uid=<?=$users[$i]['user_id']?>" data-original-title="">Xóa</a></li>
+                                                    <li><a href="edit_user.php?uid=<?=$user['user_id']?>" data-original-title="">Sửa</a></li>
+                                                    <li><a href="delete_user.php?uid=<?=$user['user_id']?>" data-original-title="">Xóa</a></li>
                                                 </ul>
                                             </div>
                                         </td>

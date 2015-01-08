@@ -5,7 +5,8 @@
 if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
 
     $cat_id = mysqli_real_escape_string($con,$_GET['cid']);
-    $cats = select_data("SELECT cat_name, parent_id FROM categories WHERE cat_id = {$cat_id}");
+    $cats = select_data("SELECT cat_name, parent_id FROM categories WHERE cat_id = {$cat_id} LIMIT 1");
+    $cat = $cats[0];
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors  = array();
@@ -48,7 +49,7 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
 }
 ?>
 <?php
-    $title = 'Sửa thể loại: ' . $cats[0]['cat_name'] . ' &raquo; Admin CP';
+    $title = 'Sửa thể loại: ' . $cat['cat_name'] . ' &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();
@@ -59,7 +60,7 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
         <div class="span12">
             <div class="widget">
                 <div class="widget-header">
-                    <div class="title">Sửa thể loại: <?php echo $cats[0]['cat_name']; ?><span class="mini-title"></span></div>
+                    <div class="title">Sửa thể loại: <?php echo $cat['cat_name']; ?><span class="mini-title"></span></div>
                     <span class="tools">
                         <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                     </span>
@@ -70,7 +71,7 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
                         <div class="control-group">
                             <label for="category" class="control-label">Tên thể loại</label>
                             <div class="controls">
-                                <input type="text" name="category" id="category" class="span4" value="<?php echo $cats[0]['cat_name']; ?>" maxlength="255" tabindex="1" />
+                                <input type="text" name="category" id="category" class="span4" value="<?php echo $cat['cat_name']; ?>" maxlength="255" tabindex="1" />
                                 <span class="help-inline ">
                                     <?php
                                         if(isset($errors) && in_array('category', $errors)) {
@@ -85,9 +86,9 @@ if (isset($_GET['cid']) && validate_int($_GET['cid'])) {
                             <div class="controls">
                                 <select name="parent_id" class="span4" tabindex="2">
                                     <option value="">Chọn một thể loại</option>
-                                    <option value="0" <?php if($cats[0]['parent_id'] == 0) echo 'selected="selected"' ?>>Root</option>
+                                    <option value="0" <?php if($cat['parent_id'] == 0) echo 'selected="selected"' ?>>Root</option>
                                     <?php
-                                        select_cat_list(0,0,$cats[0]['parent_id']);
+                                        select_cat_list(0,0,$cat['parent_id']);
                                     ?>
                                 </select>
                                 <span class="help-inline ">

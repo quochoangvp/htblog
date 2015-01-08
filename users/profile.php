@@ -6,6 +6,7 @@
     is_logged();
     $user_id = $_SESSION['uid'];
     $users = select_data("SELECT username, email, fullname, avatar, address, level, about, reg_time FROM users WHERE user_id = {$user_id} LIMIT 1");
+    $user = $users[0];
 ?>
 <div class="dashboard-wrapper">
 <div class="left-sidebar">
@@ -25,7 +26,7 @@
                             <div class="span3">
                                 <div class="thumbnail">
                                     <div id="preview">
-                                        <img src="<?=BASE_URL?>public/images/uploads/<?=empty($users[0]['avatar']) ? 'profile.png' : $users[0]['avatar'];?>" alt="user photo" />
+                                        <img src="<?=BASE_URL?>public/images/uploads/<?=empty($user['avatar']) ? 'profile.png' : $user['avatar'];?>" alt="user photo" />
                                     </div>
                                     <div title="Nhấn vào ảnh để thay ảnh đại diện" class="photoimg">
                                         <form id="imageform" method="post" enctype="multipart/form-data" action="ajaximage.php">
@@ -42,7 +43,7 @@
                                         <label class="control-label">Tên truy cập</label>
                                         <div class="controls">
                                             <a id="username" href="" data-original-title="Bạn không được phép sửa tên truy cập" class="inputText editable editable-click">
-                                                <?=$users[0]['username']?>
+                                                <?=$user['username']?>
                                             </a>
                                         </div>
                                     </div>
@@ -50,7 +51,7 @@
                                         <label class="control-label">Địa chỉ Email</label>
                                         <div class="controls">
                                             <a id="email" href="" data-type="email" data-pk="1" data-url="<?=BASE_URL?>users/user_edit_data.php" data-original-title="Nhấn vào đây để sửa email" class="inputText editable editable-click">
-                                                <?=$users[0]['email']?>
+                                                <?=$user['email']?>
                                             </a>
                                         </div>
                                     </div>
@@ -77,7 +78,7 @@
                                         <label class="control-label">Họ tên đầy đủ</label>
                                         <div class="controls">
                                             <a id="fullname" href="" data-type="text" data-pk="1" data-url="<?=BASE_URL?>users/user_edit_data.php" data-original-title="Nhấn vào đây để sửa họ tên" class="inputText editable editable-click">
-                                                <?=$users[0]['fullname']?>
+                                                <?=$user['fullname']?>
                                             </a>
                                         </div>
                                     </div>
@@ -85,7 +86,7 @@
                                         <label class="control-label">Địa chỉ</label>
                                         <div class="controls">
                                             <a id="address" href="" data-type="text" data-pk="1" data-url="<?=BASE_URL?>users/user_edit_data.php" data-original-title="Nhấn vào đây để sửa địa chỉ" class="inputText editable editable-click">
-                                                <?=$users[0]['address']?>
+                                                <?=$user['address']?>
                                             </a>
                                         </div>
                                     </div>
@@ -93,7 +94,7 @@
                                         <label class="control-label">Ghi chú</label>
                                         <div class="controls">
                                             <a id="about" href="" data-type="textarea" data-pk="1" data-url="<?=BASE_URL?>users/user_edit_data.php" data-original-title="Nhấn vào đây để viết đôi lời về bản thân" class="inputText editable editable-click">
-                                                <?=$users[0]['about']?>
+                                                <?=$user['about']?>
                                             </a>
                                         </div>
                                     </div>

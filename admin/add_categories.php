@@ -13,37 +13,40 @@
 
         // Validate category name
         if (!empty($clean['category'])) {
+
             $cat_name = mysqli_real_escape_string($con, $clean['category']);
+
             if(check_data_exist('cat_name', 'categories', "cat_name = '$cat_name'")) {
                 $errors[] = 'cat_name';
             }
-        } else {
-            $errors[] = 'category';
-        }
+
+        } else $errors[] = 'category';
 
         // Validate parent_id
         if (!empty($clean['parent_id'])) {
+
             if ($clean['parent_id'] == 0) {
+
                 $parent_id = $clean['parent_id'];
+
             } elseif (validate_int($clean['parent_id'])) {
+
                 $parent_id = mysqli_real_escape_string($con,$clean['parent_id']);
-            } else {
-                $errors[] = 'parent_id';
-            }
-        } else {
-            $errors[] = 'parent_id';
-        }
+
+            } else $errors[] = 'parent_id';
+
+        } else $errors[] = 'parent_id';
 
         // Insert to database
         if (empty($errors)) {
+
             if (insert_data('categories', '(cat_name, user_id, parent_id, time)', "('{$cat_name}', ".$_SESSION['uid'].", $parent_id, NOW())")) {
+
                 $messages = '<p class="success">Thêm thể loại thành công!</p>';
-            } else {
-                $messages = '<p class="warning">Không thể thêm thể loại!</p>';
-            }
-        } else {
-            $messages = '<p class="warning">Hãy điền đầy đủ thông tin!</p>';
-        }
+
+            } else $messages = '<p class="warning">Không thể thêm thể loại!</p>';
+
+        } else $messages = '<p class="warning">Hãy điền đầy đủ thông tin!</p>';
     }
 ?>
 <div class="dashboard-wrapper">
@@ -82,9 +85,7 @@
                                 <select name="parent_id" class="span4" tabindex='2'>
                                     <option value="">Chọn một thể loại</option>
                                     <option value="0" <?php if(isset($clean['parent_id']) && $clean['parent_id'] == 0) echo 'selected="selected"' ?>>Thể loại gốc</option>
-                                    <?php
-                                        select_cat_list(0,0,isset($clean['parent_id']) ? $clean['parent_id'] : '');
-                                    ?>
+                                    <?php select_cat_list(0,0,isset($clean['parent_id']) ? $clean['parent_id'] : ''); ?>
                                 </select>
                                 <span class="help-inline ">
                                     <?php

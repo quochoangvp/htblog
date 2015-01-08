@@ -2,17 +2,18 @@
 <?php
 if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
     $post_id = mysqli_real_escape_string($con,$_GET['pid']);
-    $posts = select_data("SELECT post_id, post_name, cat_id, content, status, user_id, time FROM posts WHERE post_id = {$post_id}");
-    if ($posts) {
+    $posts = select_data("SELECT post_id, post_name, cat_id, content, status, user_id, time FROM posts WHERE post_id = {$post_id} LIMIT 1");
+    $post = $posts[0];
+    if ($post) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $trash = mysqli_real_escape_string($con,strip_tags($_POST['trash']));
             if ($trash == 'yes') {
-                $post_name = mysqli_real_escape_string($con, strip_tags($posts[0]['post_name']));
-                $cat_id = mysqli_real_escape_string($con, $posts[0]['cat_id']);
-                $content = mysqli_real_escape_string($con, $posts[0]['content']);
-                $status = mysqli_real_escape_string($con, $posts[0]['status']);
-                $user_id = (int)$posts[0]['user_id'];
-                $time = mysqli_real_escape_string($con, $posts[0]['time']);
+                $post_name = mysqli_real_escape_string($con, strip_tags($post['post_name']));
+                $cat_id = mysqli_real_escape_string($con, $post['cat_id']);
+                $content = mysqli_real_escape_string($con, $post['content']);
+                $status = mysqli_real_escape_string($con, $post['status']);
+                $user_id = (int)$post['user_id'];
+                $time = mysqli_real_escape_string($con, $post['time']);
 
                 $cols = 'trash_name, parent, content, status, user_id, type, time';
                 $val  = "'".$post_name."', ".$cat_id.", '".$content."', '".$status."', ".$user_id.", 'posts', '".$time."'";
@@ -37,7 +38,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
 } else {
     redirect_to('admin/view_posts.php');
 }
-    $title = 'Chuyển vào thùng rác: ' . $posts[0]['post_name'] . ' &raquo; Admin CP';
+    $title = 'Chuyển vào thùng rác: ' . $post['post_name'] . ' &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();
@@ -49,7 +50,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
         <div class="span10">
             <div class="widget">
                 <div class="widget-header">
-                    <div class="title">Chuyển vào thùng rác: <?php echo $posts[0]['post_name']; ?><span class="mini-title"></span></div>
+                    <div class="title">Chuyển vào thùng rác: <?php echo $post['post_name']; ?><span class="mini-title"></span></div>
                     <span class="tools">
                         <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                     </span>

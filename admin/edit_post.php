@@ -3,8 +3,9 @@
 if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
 
     $post_id = mysqli_real_escape_string($con,$_GET['pid']);
-    $posts = select_data("SELECT post_name, post_des, cat_id, thumbnail, content, status FROM posts WHERE post_id = {$post_id}");
-    if (!$posts[0]['post_name']) redirect_to('admin/view_posts.php');
+    $posts = select_data("SELECT post_name, post_des, cat_id, thumbnail, content, status FROM posts WHERE post_id = {$post_id} LIMIT 1");
+    $post = $posts[0];
+    if (!$post['post_name']) redirect_to('admin/view_posts.php');
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors  = array();
         $trimmed = array_map('trim', $_POST);
@@ -51,15 +52,15 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             $tag_name = rtrim($tag_name,',');
             $tags = explode(',', $tag_name);
 
-            for ($i=0; $i < sizeof($tags); $i++) { 
-                if(!check_data_exist('tag_name', 'tags', "tag_name='".$tags[$i]."'")) {
-                    if (insert_data('tags',"(`tag_name`)", "('".$tags[$i]."')")) {
+            foreach ($tags as $tag) {
+                if(!check_data_exist('tag_name', 'tags', "tag_name='".$tag."'")) {
+                    if (insert_data('tags',"(`tag_name`)", "('".$tag."')")) {
                         // Thanh cong
                     } else {
                         // That bai
                     }
                 }
-                $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tags[$i]."' LIMIT 1");
+                $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tag."' LIMIT 1");
                 $tag_id = $tag_id[0]['tag_id'];
                 if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = {$post_id}")) {
                     if (insert_data('tags_posts',"(`tag_id`, `post_id`)", "($tag_id, $post_id)")) {
@@ -91,7 +92,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
 } else {
     redirect_to('admin/view_posts.php');
 }
-    $title = 'Chỉnh sửa: ' . $posts[0]['post_name'] . ' &raquo; Admin CP';
+    $title = 'Chỉnh sửa: ' . $post['post_name'] . ' &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();
@@ -103,7 +104,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             <div class="span12">
                 <div class="widget">
                     <div class="widget-header">
-                        <div class="title" id="<?=$post_id?>">Chỉnh sửa: <?=$posts[0]['post_name']; ?><span class="mini-title"><?php if(isset($errors) && in_array('content', $errors)) { echo "<p class='warning'>Vui lòng nhập nội dung</p>"; } ?></span></div>
+                        <div class="title" id="<?=$post_id?>">Chỉnh sửa: <?=$post['post_name']; ?><span class="mini-title"><?php if(isset($errors) && in_array('content', $errors)) { echo "<p class='warning'>Vui lòng nhập nội dung</p>"; } ?></span></div>
                         <span class="tools">
                             <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                         </span>
@@ -112,7 +113,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                         <?php if(!empty($messages)) echo '<div class="wrapper">'.$messages.'</div>'; ?>
                         <div class="wrapper">
                             <label for="post" class="text">Nhập tên bài viết ở đây</label>
-                            <input form="add_post" type="text" name="post_name" id="post_name" class="input-block-level" value="<?=$posts[0]['post_name']; ?>" maxlength="255" tabindex="1" />
+                            <input form="add_post" type="text" name="post_name" id="post_name" class="input-block-level" value="<?=$post['post_name']; ?>" maxlength="255" tabindex="1" />
                             <?php
                                 if(isset($errors) && in_array('post_name', $errors)) {
                                     echo "<p class='warning'>Vui lòng nhập tên bài viết</p>";
@@ -120,7 +121,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                             ?>
                         </div>
                         <div>
-                            <textarea form="add_post" class="mceEditor" name="content" cols="50" rows="20"><?=$posts[0]['content']; ?></textarea>
+                            <textarea form="add_post" class="mceEditor" name="content" cols="50" rows="20"><?=$post['content']; ?></textarea>
                         </div>
                         <div class="form-actions no-margin">
                             <div class="next-prev-btn-container pull-left" style="margin-left: 12px;">
@@ -141,7 +142,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             <select form="add_post" name="cat_id" class="input-block-level" tabindex="2">
                 <option value="">Chọn một thể loại</option>
                 <?php
-                    select_cat_list(0,0,$posts[0]['cat_id']);
+                    select_cat_list(0,0,$post['cat_id']);
                 ?>
             </select>
             <?php
@@ -158,10 +159,10 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                         echo $clean['post_des'];
                     }
                 } else {
-                    if (!empty($posts[0]['post_des'])) {
-                        echo $posts[0]['post_des'];
+                    if (!empty($post['post_des'])) {
+                        echo $post['post_des'];
                     } else {
-                        echo the_excerpt(strip_tags($posts[0]['content']),170);
+                        echo the_excerpt(strip_tags($post['content']),170);
                     }
                 }
             ?></textarea>
@@ -180,9 +181,9 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
             <div id="results"<?php if(empty($tags)) echo 'style="display:none;"' ?>>
                 <?php
                     echo '<input form="add_post" type="hidden" id="tags_input" name="tag_name" value="';
-                    for ($i=0; $i < sizeof($tags); $i++) echo $tags[$i]['tag_name'] . ',';
+                    if(!empty($tags)) foreach ($tags as $tag) echo $tag['tag_name'] . ',';
                     echo '" />';
-                    for ($i=0; $i < sizeof($tags); $i++) echo '<a href="#" class="tags_val">'.$tags[$i]['tag_name'].'</a>';
+                    if(!empty($tags)) foreach ($tags as $tag) echo '<a href="#" class="tags_val">'.$tag['tag_name'].'</a>';
                 ?>
             </div>
         </div>
@@ -200,7 +201,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if(isset($clean['status']) && $clean['status']=='publish') echo 'checked="checked"';
                     } else {
-                        if($posts[0]['status'] == 'publish') echo 'checked="checked"';
+                        if($post['status'] == 'publish') echo 'checked="checked"';
                     }
                     ?> />Công khai</label>
             </div>
@@ -233,14 +234,14 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                         } else {
                             echo '<img src="'.BASE_URL.'public/images/uploads/';
                             if(empty($posts[0]['thumbnail'])) echo 'no_thumb.jpg';
-                            else echo 'posts/'.$posts[0]['thumbnail'];
+                            else echo 'posts/'.$post['thumbnail'];
                             echo '" alt="user photo" />';
                             
                             echo '<label id="lbl_post_thumb" for="';
-                            if(!empty($posts[0]['thumbnail'])) echo $posts[0]['thumbnail'];
+                            if(!empty($post['thumbnail'])) echo $post['thumbnail'];
                             echo '">';
                             echo '<input form="add_post" type="hidden" id="input_post_thumbnail" name="post_thumbnail" value="';
-                            if(!empty($posts[0]['thumbnail'])) echo $posts[0]['thumbnail'];
+                            if(!empty($post['thumbnail'])) echo $post['thumbnail'];
                             echo '" />';
                             echo '</label>';
                         }
@@ -258,7 +259,7 @@ if (isset($_GET['pid']) && validate_int($_GET['pid'])) {
                             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 if(!empty($clean['post_thumbnail'])) echo '<a id="del" href="#" class="button">Xóa</a>';
                             } else {
-                                if(!empty($posts[0]['thumbnail'])) echo '<a id="del" href="#" class="button">Xóa</a>';
+                                if(!empty($post['thumbnail'])) echo '<a id="del" href="#" class="button">Xóa</a>';
                             }
                         ?>
                     </div>

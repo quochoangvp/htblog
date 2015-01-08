@@ -2,16 +2,17 @@
 <?php
 if (isset($_GET['id']) && validate_int($_GET['id'])) {
     $id = mysqli_real_escape_string($con,$_GET['id']);
-    $trash = select_data("SELECT trash_name, parent, content, status, user_id, type, time FROM trash WHERE trash_id = {$id}");
+    $trashs = select_data("SELECT trash_name, parent, content, status, user_id, type, time FROM trash WHERE trash_id = {$id} LIMIT 1");
+    $trash = $trashs[0];
     if($trash) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $restore = mysqli_real_escape_string($con,strip_tags($_POST['restore']));
             if ($restore == 'yes') {
-                $trash_name = mysqli_real_escape_string($con, strip_tags($trash[0]['trash_name']));
-                $user_id = (int)$trash[0]['user_id'];
-                $parent = (int)$trash[0]['parent'];
-                $content = mysqli_real_escape_string($con, $trash[0]['content']);
-                $time = mysqli_real_escape_string($con, $trash[0]['time']);
+                $trash_name = mysqli_real_escape_string($con, strip_tags($trash['trash_name']));
+                $user_id = (int)$trash['user_id'];
+                $parent = (int)$trash['parent'];
+                $content = mysqli_real_escape_string($con, $trash['content']);
+                $time = mysqli_real_escape_string($con, $trash['time']);
 
                 if (insert_data('posts', '(post_name, user_id, cat_id, content, time)', "('".$trash_name."', ".$user_id.", ".$parent.", '".$content."', '".$time."')")) {
                     if (delete_data('trash', "trash_id = {$id}")) {
@@ -33,7 +34,7 @@ if (isset($_GET['id']) && validate_int($_GET['id'])) {
 
     redirect_to('admin/trash.php');
 }
-    $title = 'Khôi phục: ' . $trash[0]['trash_name'];
+    $title = 'Khôi phục: ' . $trash['trash_name'];
     get_header();
     get_nav();
     admin_access();
@@ -45,7 +46,7 @@ if (isset($_GET['id']) && validate_int($_GET['id'])) {
         <div class="span10">
             <div class="widget">
                 <div class="widget-header">
-                    <div class="title">Khôi phục: <?php echo $trash[0]['trash_name']; ?><span class="mini-title"></span></div>
+                    <div class="title">Khôi phục: <?php echo $trash['trash_name']; ?><span class="mini-title"></span></div>
                     <span class="tools">
                         <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                     </span>

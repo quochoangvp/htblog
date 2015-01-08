@@ -27,7 +27,6 @@
                             $q .= " USING(cat_id) ";
                             $q .= " ORDER BY post_name ASC";
                         $posts = select_data($q);
-                        $size = sizeof($posts);
 
                         if ($posts) {
                     ?>
@@ -47,17 +46,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php for ($i=0; $i < $size; $i++) { ?>
+                                    <?php foreach ($posts as $post) { ?>
                                     <tr class="gradeA odd">
                                         <td><input type="checkbox" class="no-margin"></td>
-                                        <td><span class="name"><?=$posts[$i]['post_name']?></span></td>
-                                        <td class="center"><?=$posts[$i]['time']?></td>
-                                        <td class="center"><?=$posts[$i]['username']?></td>
-                                        <td><?=the_excerpt($posts[$i]['content'])?></td>
-                                        <td><a href="<?=BASE_URL?>category.php?cid=<?=$posts[$i]['cat_id']?>"><?=$posts[$i]['cat_name']?></a></td>
+                                        <td><span class="name"><?=$post['post_name']?></span></td>
+                                        <td class="center"><?=$post['time']?></td>
+                                        <td class="center"><?=$post['username']?></td>
+                                        <td><?=the_excerpt($post['content'])?></td>
+                                        <td><a href="<?=BASE_URL?>category.php?cid=<?=$post['cat_id']?>"><?=$post['cat_name']?></a></td>
                                         <td class="center"><?php
-                                            if($posts[$i]['status'] == 'publish') echo '<span class="label label label-success">Công khai</span>';
-                                            if($posts[$i]['status'] == 'draft') echo '<span class="label label label-warning">Bản nháp</span>';
+                                            if($post['status'] == 'publish') echo '<span class="label label label-success">Công khai</span>';
+                                            if($post['status'] == 'draft') echo '<span class="label label label-warning">Bản nháp</span>';
                                         ?></td>
                                         <td class="hidden-phone">
                                             <div class="btn-group">
@@ -65,8 +64,8 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="edit_post.php?pid=<?=$posts[$i]['post_id']?>" data-original-title="">Sửa</a></li>
-                                                    <li><a href="trash_post.php?pid=<?=$posts[$i]['post_id']?>" data-original-title="">Xóa</a></li>
+                                                    <li><a href="edit_post.php?pid=<?=$post['post_id']?>" data-original-title="">Sửa</a></li>
+                                                    <li><a href="trash_post.php?pid=<?=$post['post_id']?>" data-original-title="">Xóa</a></li>
                                                 </ul>
                                             </div>
                                         </td>

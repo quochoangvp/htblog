@@ -2,12 +2,13 @@
 <?php
 if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
     $user_id = mysqli_real_escape_string($con,$_GET['uid']);
-    $users = select_data("SELECT username, level FROM users WHERE user_id = {$user_id}");
-    if($users) {
+    $users = select_data("SELECT username, level FROM users WHERE user_id = {$user_id} LIMIT 1");
+    $user = $users[0];
+    if($user) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $delete = mysqli_real_escape_string($con,strip_tags($_POST['delete']));
             if ($delete == 'yes') {
-                if($users[0]['level'] == 'owner') {
+                if($user['level'] == 'owner') {
                     $messages = '<p class="warning">Không thể xóa Owner!</p>';
                 } else {
                     if(delete_data('users', "user_id = $user_id")) {
@@ -26,7 +27,7 @@ if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
 } else {
     redirect_to('admin/manage_users.php');
 }
-    $title = 'Xóa người dùng: ' . $users[0]['username'] . ' &raquo; Admin CP';
+    $title = 'Xóa người dùng: ' . $user['username'] . ' &raquo; Admin CP';
     get_header();
     get_nav();
     admin_access();
@@ -38,7 +39,7 @@ if (isset($_GET['uid']) && validate_int($_GET['uid'])) {
         <div class="span6">
             <div class="widget">
                 <div class="widget-header">
-                    <div class="title">Xóa người dùng: <?php echo $users[0]['username']; ?><span class="mini-title"></span></div>
+                    <div class="title">Xóa người dùng: <?php echo $user['username']; ?><span class="mini-title"></span></div>
                     <span class="tools">
                         <a class="fs1" aria-hidden="true" data-icon="" data-original-title=""></a>
                     </span>

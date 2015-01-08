@@ -14,9 +14,9 @@
                 		<div class="featured-articles-container">
                 			<div class="articles">
                 				<?php
-							       if (sidebar_recent_posts()) {
-							            echo sidebar_recent_posts();
-							        }
+							       //if (sidebar_recent_posts()) {
+							            //echo sidebar_recent_posts();
+							        //}
 							    ?>
 							</div>
 						</div>

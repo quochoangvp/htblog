@@ -14,38 +14,39 @@
 
         // Validate post_name
         if (!empty($clean['post_name'])) {
+
             $post_name = mysqli_real_escape_string($con, $clean['post_name']);
-        } else {
-            $errors[] = 'post_name';
-        }
+
+        } else $errors[] = 'post_name';
 
         // Validate cat_id
         if (!empty($clean['cat_id']) && validate_int($clean['cat_id'])) {
+
             $cat_id = mysqli_real_escape_string($con,$clean['cat_id']);
-        } else {
-            $errors[] = 'cat_id';
-        }
+
+        } else $errors[] = 'cat_id';
 
         // Validate content
         if (!empty($trimmed['content'])) {
+
             $content = strip_tags($trimmed['content'],'<div><p><a><strong><b><s><u><em><sub><sup><pre><code><span><br><hr><blockquote><ul><ol><li><h6><h5><h4><h3><img>');
             $content = mysqli_real_escape_string($con, $trimmed['content']);
-        } else {
-            $errors[] = 'content';
-        }
+
+        } else $errors[] = 'content';
 
         // Validate status
         if (!empty($clean['status']) && ($clean['status'] == 'draft' || $clean['status'] == 'publish')) {
+
             $status = $clean['status'];
-        } else {
-            $errors[] = 'status';
-        }
+
+        } else $errors[] = 'status';
+
         // Validate description
         if (!empty($clean['post_des'])) {
+
             $post_des = mysqli_real_escape_string($con,$clean['post_des']);
-        } else {
-            $errors[] = 'post_des';
-        }
+
+        } else $errors[] = 'post_des';
 
         // Validate post thumbnail
         if (!empty($clean['post_thumbnail'])) {
@@ -63,17 +64,19 @@
                     $tag_name = rtrim($tag_name,',');
                     $tags = explode(',', $tag_name);
 
-                    for ($i=0; $i < sizeof($tags); $i++) { 
-                        if(!check_data_exist('tag_name', 'tags', "tag_name='".$tags[$i]."'")) {
-                            if (insert_data('tags',"(`tag_name`)", "('".$tags[$i]."')")) {
+                    foreach ($tags as $tag) {
+                        if(!check_data_exist('tag_name', 'tags', "tag_name='".$tag."'")) {
+                            if (insert_data('tags',"(`tag_name`)", "('".$tag."')")) {
                                 // Thanh cong
                             } else {
                                 // That bai
                             }
                         }
-                        $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tags[$i]."' LIMIT 1");
+                        $tag_id = select_data("SELECT tag_id FROM tags WHERE tag_name = '".$tag."' LIMIT 1");
                         $tag_id = $tag_id[0]['tag_id'];
+
                         if(!check_data_exist('id', 'tags_posts', "tag_id = {$tag_id} AND post_id = ".$posts[0]['post_id'])) {
+
                             if (insert_data('tags_posts',"(`tag_id`, `post_id`)", "($tag_id, ".$posts[0]['post_id'].")")) {
                                 // Thanh cong
                             } else {
@@ -85,13 +88,12 @@
                     }
                 }
                 if (!empty($posts)) redirect_to('admin/edit_post.php?pid='.$posts[0]['post_id']);
+
                 $messages = '<p class="success">Đăng bài thành công!</p>';
-            } else {
-                $messages = '<p class="warning">Không thể đăng bài!</p>';
-            }
-        } else {
-            $messages = '<p class="warning">Hãy điền đầy đủ dữ liệu!</p>';
-        }
+
+            } else $messages = '<p class="warning">Không thể đăng bài!</p>';
+
+        } else $messages = '<p class="warning">Hãy điền đầy đủ dữ liệu!</p>';
     }
 ?>
 <div class="dashboard-wrapper">

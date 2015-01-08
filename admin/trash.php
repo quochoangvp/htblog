@@ -24,7 +24,6 @@
                         $q .= " USING(user_id) ";
                         $q .= " ORDER BY trash_id ASC";
                     $posts = select_data($q);
-                    $size = sizeof($posts);
 
                     if ($posts) { ?>
                     <div id="dt_example" class="example_alt_pagination">
@@ -42,22 +41,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php for ($i=0; $i < $size; $i++) { ?>
+                                <?php foreach ($posts as $post) { ?>
                                     <tr class="gradeA odd">
                                         <td><input type="checkbox" class="no-margin"></td>
-                                        <td><span class="name"><?=$posts[$i]['trash_name']?></span></td>
-                                        <td class="center"><?=$posts[$i]['username']?></td>
-                                        <td><?=the_excerpt($posts[$i]['content'])?></td>
-                                        <td><?=($posts[$i]['status'] == 'draft') ? '<span class="label label label-warning">Nháp</span>' : '<span class="label label label-success">Công khai</span>';?></td>
-                                        <td><?=($posts[$i]['type'] == 'posts') ? '<span class="label label label-success">Bài viết</span>' : ''; ?></td>
+                                        <td><span class="name"><?=$post['trash_name']?></span></td>
+                                        <td class="center"><?=$post['username']?></td>
+                                        <td><?=the_excerpt($post['content'])?></td>
+                                        <td><?=($post['status'] == 'draft') ? '<span class="label label label-warning">Nháp</span>' : '<span class="label label label-success">Công khai</span>';?></td>
+                                        <td><?=($post['type'] == 'posts') ? '<span class="label label label-success">Bài viết</span>' : ''; ?></td>
                                         <td class="hidden-phone">
                                             <div class="btn-group">
                                                 <button data-toggle="dropdown" class="btn btn-mini dropdown-toggle">Thao tác
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a href="restore.php?id=<?=$posts[$i]['trash_id']?>" data-original-title="">Khôi phục</a></li>
-                                                    <li><a href="delete.php?id=<?=$posts[$i]['trash_id']?>" data-original-title="">Xóa vĩnh viễn</a></li>
+                                                    <li><a href="restore.php?id=<?=$post['trash_id']?>" data-original-title="">Khôi phục</a></li>
+                                                    <li><a href="delete.php?id=<?=$post['trash_id']?>" data-original-title="">Xóa vĩnh viễn</a></li>
                                                 </ul>
                                             </div>
                                         </td>
